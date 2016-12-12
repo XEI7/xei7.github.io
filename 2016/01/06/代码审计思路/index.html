@@ -1,0 +1,267 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>代码审计思路 | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="document.write(document.cookie)grep -i -r “\$_GET” grep -i -r -exclude-dir={.svn,external} “exec(“ 代码审计思路之实例解说全文通读FreeBuf特约作者Seay http://www.freebuf.com/vuls/87138.html">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="代码审计思路"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	代码审计思路
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2016-01-06T10:51:25.000Z" itemprop="datePublished">2016-01-06</time>
+    更新日期:<time datetime="2016-09-23T09:38:36.301Z" itemprop="dateModified">2016-09-23</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>document.write(document.cookie)<br>grep -i -r “\$_GET” <em><br>grep -i -r -exclude-dir={.svn,external} “exec(“ </em><br>代码审计思路之实例解说全文通读<br>FreeBuf特约作者Seay <a href="http://www.freebuf.com/vuls/87138.html" target="_blank" rel="external">http://www.freebuf.com/vuls/87138.html</a><br><a id="more"></a><br>在看程序目录结构的时候，我们要特别注意几个文件，分别如下： </p>
+<p>1) 函数集文件，通常命名中包含functions或者common等关键字，这些文件里面是一些公共的函数，提供给其他文件统一调用，所以大多数文件都会在文件头部包含到它们，寻找这些文件一个非常好用的技巧就是去打开index.php或者一些功能性文件，在头部一般都能找到。 </p>
+<p>2) 配置文件，通常命名里面包括config这个关键字，配置文件包括Web程序运行必须的功能性配置选项以及数据库等配置信息，从这个文件里面可以了解程序的小部分功能，另外看这个文件的时候注意观察配置文件中参数值是用单引号还是用的双引号包起来，如果是双引号，则很大可能会存在代码执行漏洞，例如下面kuwebs的代码，只要我们在修改配置的时候利用PHP可变变量的特性即可执行代码。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="php"><span class="meta">&lt;?php</span></span></div><div class="line"><span class="comment">/*网站基本信息配置*/</span></div><div class="line">$kuWebsiteURL       = <span class="string">"http://www.kuwebs.com"</span>;</div><div class="line">$kuWebsiteSupportEn         = <span class="string">"1"</span>;</div><div class="line">$kuWebsiteSupportSimplifiedOrTraditional          = <span class="string">"0"</span>;</div><div class="line">$kuWebsiteDefauleIndexLanguage                    = <span class="string">"cn"</span>;</div><div class="line">$kuWebsiteUploadFileMax                           = <span class="string">"2"</span>;</div><div class="line">$kuWebsiteAllowUploadFileFormat   = <span class="string">"swf|rar|jpg|zip|gif"</span>;</div><div class="line"></div><div class="line"><span class="comment">/*邮件设置*/</span></div><div class="line">$kuWebsiteMailType        = <span class="string">"1"</span>;</div><div class="line">$kuWebsiteMailSmtpHost             = <span class="string">"smtp.qq.com"</span>;</div></pre></td></tr></table></figure></p>
+<p>3) 安全过滤文件，安全过滤文件对我们做代码审计至关重要，关系到我们挖掘到的可疑点能不能利用，通常命名中有filter、safe、check等关键字，这类文件主要是对参数进行过滤，比较常见的是针对SQL注入和XSS过滤，还有文件路径、执行的系统命令的参数，其他的则相对少见。而目前大多数应用都会在程序的入口循环对所有参数使用addslashes()函数进行过滤。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">_do_query_safe</span><span class="params">($sql)</span> </span>&#123;</div><div class="line">              $sql = str_replace(<span class="keyword">array</span>(<span class="string">'\\\\'</span>, <span class="string">'\\\''</span>, <span class="string">'\\"'</span>, <span class="string">'\'\''</span>), <span class="string">''</span>, $sql);</div><div class="line">              $mark = $clean = <span class="string">''</span>;</div><div class="line">              <span class="keyword">if</span> (strpos($sql, <span class="string">'/'</span>) === <span class="keyword">false</span> &amp;&amp; strpos($sql, <span class="string">'#'</span>) === <span class="keyword">false</span> &amp;&amp; strpos($sql, <span class="string">'-- '</span>) === <span class="keyword">false</span> &amp;&amp; strpos($sql, <span class="string">'@'</span>) === <span class="keyword">false</span> &amp;&amp; strpos($sql, <span class="string">'`'</span>) === <span class="keyword">false</span>) &#123;</div><div class="line">                     $clean = preg_replace(<span class="string">"/'(.+?)'/s"</span>, <span class="string">''</span>, $sql);</div><div class="line">              &#125; <span class="keyword">else</span> &#123;</div></pre></td></tr></table></figure></p>
+<p>4) index文件，index是一个程序的入口文件，所以通常我们只要读一遍index文件就可以大致的了解整个程序的架构，运行的流程，包含到的文件，其中核心的文件又有哪些，而不同目录的index文件也有不同的实现方式，建议最好是先把几个核心目录的index文件都简单读一遍。 </p>
+<p>上面介绍了我们应该注意的部分文件，可以帮助我们更有方向的去读全部的代码，实际上在我们真正做的代码审计的时候，经常会遇到各种框架，这时候就会被搞的晕头转向，所以在学习代码审计的前期建议不要去读开源框架或者使用开源框架的应用，先去chinaz、admin5一类的源码下载网站下载一些小应用来读一下，并且一定要多找几套程序通读全文代码，这样我们才能总结经验，等总结了一定的经验，会PHP也比较熟悉的时候，再去读一些像thinkphp、Yii、Zend Framework等开源框架，才能快速的挖掘高质量的漏洞。</p>
+<p>通读全文代码的好处显而易见，可以更好的了解程序的架构以及业务逻辑，能够挖掘到更多更高质量的逻辑漏洞，一般老手会比较喜欢这种方式。而缺点就是花费的时间比较多，如果程序比较大，读起来也会比较累。 </p>
+<p>1.1.1 骑士cms通读审计案例</p>
+<p>我们已经介绍了代码审计中通读全文代码审计方式的思路，下面我们来用这种方式进行一个大致的案例说明。</p>
+<p>为了方便大家理解，笔者找了一款相对简单容易看懂的应用骑士cms来介绍，版本是3.5.1，具体的审计思路我们在上文中已经有过介绍。</p>
+<p>1.1.1.1 查看应用文件结构</p>
+<p>首先需要看看有哪些文件和文件夹，寻找名称里有没有带有api、admin、manage、include一类关键字的文件和文件夹，通常这些文件比较重要，在这个程序里，可以看到并没有什么php文件，就一个index.php，看到有一个名为include的文件夹，一般比较核心的文件都会放在这个文件夹，我们进行看看大概有哪些文件，如图所示：</p>
+<p>1.1.1.2 查看关键文件代码</p>
+<p>在这个文件夹里面我们看到了多个数十K的PHP文件，比如common.fun.php就是本程序的核心文件，基础函数基本在这个文件中实现，我们来看看这个文件里有哪些关键函数，一打开这个文件，立马就看到一大堆过滤函数，这是我们最应该关心的地方，首先是一个SQL注入过滤函数。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">addslashes_deep</span><span class="params">($value)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">empty</span>($value))</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> $value;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span></div><div class="line">    &#123;</div><div class="line">              <span class="keyword">if</span> (!get_magic_quotes_gpc())</div><div class="line">              &#123;</div><div class="line">              $value=is_array($value) ? array_map(<span class="string">'addslashes_deep'</span>, $value) : mystrip_tags(addslashes($value));</div><div class="line">              &#125;</div><div class="line">              <span class="keyword">else</span></div><div class="line">              &#123;</div><div class="line">              $value=is_array($value) ? array_map(<span class="string">'addslashes_deep'</span>, $value) : mystrip_tags($value);</div><div class="line">              &#125;</div><div class="line">              <span class="keyword">return</span> $value;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>该函数将传入的变量使用addslashes()函数进行过滤，也就过滤掉了单引号、双引号、NULL字符以及斜杠，现在我们要记住，在挖掘SQL注入等漏洞时，只要参数在拼接到sql语句前，除非有宽字节注入或者其他特殊情况，否则使用了这个函数就不能注入了。</p>
+<p>再往下走是一个XSS过滤的函数mystrip_tags()，代码如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">mystrip_tags</span><span class="params">($string)</span></span></div><div class="line">&#123;</div><div class="line">       $string = new_html_special_chars($string);</div><div class="line">       $string = remove_xss($string);</div><div class="line">       <span class="keyword">return</span> $string;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个函数调用了new_html_special_chars()和remove_xss()两个函数来过滤XSS，就在该函数下方，代码如下<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">new_html_special_chars</span><span class="params">($string)</span> </span>&#123;</div><div class="line">       $string = str_replace(<span class="keyword">array</span>(<span class="string">'&amp;amp;'</span>, <span class="string">'&amp;quot;'</span>, <span class="string">'&amp;lt;'</span>, <span class="string">'&amp;gt;'</span>), <span class="keyword">array</span>(<span class="string">'&amp;'</span>, <span class="string">'"'</span>, <span class="string">'&lt;'</span>, <span class="string">'&gt;'</span>), $string);</div><div class="line">       $string = strip_tags($string);</div><div class="line">       <span class="keyword">return</span> $string;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">remove_xss</span><span class="params">($string)</span> </span>&#123;</div><div class="line">    $string = preg_replace(<span class="string">'/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/S'</span>, <span class="string">''</span>, $string);</div><div class="line"> </div><div class="line">    $parm1 = <span class="keyword">Array</span>(<span class="string">'javascript'</span>, <span class="string">'union'</span>,<span class="string">'vbscript'</span>, <span class="string">'expression'</span>, <span class="string">'applet'</span>, <span class="string">'xml'</span>, <span class="string">'blink'</span>, <span class="string">'link'</span>, <span class="string">'script'</span>, <span class="string">'embed'</span>, <span class="string">'object'</span>, <span class="string">'iframe'</span>, <span class="string">'frame'</span>, <span class="string">'frameset'</span>, <span class="string">'ilayer'</span>, <span class="string">'layer'</span>, <span class="string">'bgsound'</span>, <span class="string">'title'</span>, <span class="string">'base'</span>);</div><div class="line"> </div><div class="line">    $parm2 = <span class="keyword">Array</span>(<span class="string">'onabort'</span>, <span class="string">'onactivate'</span>, <span class="string">'onafterprint'</span>, <span class="string">'onafterupdate'</span>, <span class="string">'onbeforeactivate'</span>, <span class="string">'onbeforecopy'</span>, <span class="string">'onbeforecut'</span>, <span class="string">'onbeforedeactivate'</span>, <span class="string">'onbeforeeditfocus'</span>, <span class="string">'onbeforepaste'</span>, <span class="string">'onbeforeprint'</span>, <span class="string">'onbeforeunload'</span>, <span class="string">'onbeforeupdate'</span>, <span class="string">'onblur'</span>, <span class="string">'onbounce'</span>, <span class="string">'oncellchange'</span>, <span class="string">'onchange'</span>, <span class="string">'onclick'</span>, <span class="string">'oncontextmenu'</span>, <span class="string">'oncontrolselect'</span>, <span class="string">'oncopy'</span>, <span class="string">'oncut'</span>, <span class="string">'ondataavailable'</span>, <span class="string">'ondatasetchanged'</span>, <span class="string">'ondatasetcomplete'</span>, <span class="string">'ondblclick'</span>, <span class="string">'ondeactivate'</span>, <span class="string">'ondrag'</span>, <span class="string">'ondragend'</span>, <span class="string">'ondragenter'</span>, <span class="string">'ondragleave'</span>, <span class="string">'ondragover'</span>, <span class="string">'ondragstart'</span>, <span class="string">'ondrop'</span>, <span class="string">'onerror'</span>, <span class="string">'onerrorupdate'</span>, <span class="string">'onfilterchange'</span>, <span class="string">'onfinish'</span>, <span class="string">'onfocus'</span>, <span class="string">'onfocusin'</span>, <span class="string">'onfocusout'</span>, <span class="string">'onhelp'</span>, <span class="string">'onkeydown'</span>, <span class="string">'onkeypress'</span>, <span class="string">'onkeyup'</span>, <span class="string">'onlayoutcomplete'</span>, <span class="string">'onload'</span>, <span class="string">'onlosecapture'</span>, <span class="string">'onmousedown'</span>, <span class="string">'onmouseenter'</span>, <span class="string">'onmouseleave'</span>, <span class="string">'onmousemove'</span>, <span class="string">'onmouseout'</span>, <span class="string">'onmouseover'</span>, <span class="string">'onmouseup'</span>, <span class="string">'onmousewheel'</span>, <span class="string">'onmove'</span>, <span class="string">'onmoveend'</span>, <span class="string">'onmovestart'</span>, <span class="string">'onpaste'</span>, <span class="string">'onpropertychange'</span>, <span class="string">'onreadystatechange'</span>, <span class="string">'onreset'</span>, <span class="string">'onresize'</span>, <span class="string">'onresizeend'</span>, <span class="string">'onresizestart'</span>, <span class="string">'onrowenter'</span>, <span class="string">'onrowexit'</span>, <span class="string">'onrowsdelete'</span>, <span class="string">'onrowsinserted'</span>, <span class="string">'onscroll'</span>, <span class="string">'onselect'</span>, <span class="string">'onselectionchange'</span>, <span class="string">'onselectstart'</span>, <span class="string">'onstart'</span>, <span class="string">'onstop'</span>, <span class="string">'onsubmit'</span>, <span class="string">'onunload'</span>,<span class="string">'style'</span>,<span class="string">'href'</span>,<span class="string">'action'</span>,<span class="string">'location'</span>,<span class="string">'background'</span>,<span class="string">'src'</span>,<span class="string">'poster'</span>);</div><div class="line">      </div><div class="line">       $parm3= <span class="keyword">Array</span>(<span class="string">'alert'</span>,<span class="string">'sleep'</span>,<span class="string">'load_file'</span>,<span class="string">'confirm'</span>,<span class="string">'prompt'</span>,<span class="string">'benchmark'</span>,<span class="string">'select'</span>,<span class="string">'update'</span>,<span class="string">'insert'</span>,<span class="string">'delete'</span>,<span class="string">'alter'</span>,<span class="string">'drop'</span>,<span class="string">'truncate'</span>,<span class="string">'script'</span>,<span class="string">'eval'</span>);</div><div class="line"> </div><div class="line">    $parm = array_merge($parm1, $parm2, $parm3);</div><div class="line"> </div><div class="line">       <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; sizeof($parm); $i++) &#123;</div><div class="line">              $pattern = <span class="string">'/'</span>;</div><div class="line">              <span class="keyword">for</span> ($j = <span class="number">0</span>; $j &lt; strlen($parm[$i]); $j++) &#123;</div><div class="line">                     <span class="keyword">if</span> ($j &gt; <span class="number">0</span>) &#123;</div><div class="line">                            $pattern .= <span class="string">'('</span>;</div><div class="line">                            $pattern .= <span class="string">'(&amp;#[x|X]0([9][a][b]);?)?'</span>;</div><div class="line">                            $pattern .= <span class="string">'|(&amp;#0([9][10][13]);?)?'</span>;</div><div class="line">                            $pattern .= <span class="string">')?'</span>;</div><div class="line">                     &#125;</div><div class="line">                     $pattern .= $parm[$i][$j];</div><div class="line">              &#125;</div><div class="line">              $pattern .= <span class="string">'/i'</span>;</div><div class="line">              $string = preg_replace($pattern, <span class="string">'****'</span>, $string);</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> $string;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在new_html_special_chars()函数中可以看到，这个函数对&amp;符号、双引号以及尖括号进行了html实体编码，并且使用strip_tags()函数进行了二次过滤。而remove_xss()函数则是对一些标签关键字、事件关键字以及敏感函数关键字进行了替换。 </p>
+<p>再往下走有一个获取ip地址的函数getip() 是可以伪造IP地址的。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getip</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">if</span> (getenv(<span class="string">'HTTP_CLIENT_IP'</span>) <span class="keyword">and</span> strcasecmp(getenv(<span class="string">'HTTP_CLIENT_IP'</span>),<span class="string">'unknown'</span>)) &#123;</div><div class="line">              $onlineip=getenv(<span class="string">'HTTP_CLIENT_IP'</span>);</div><div class="line">       &#125;<span class="keyword">elseif</span> (getenv(<span class="string">'HTTP_X_FORWARDED_FOR'</span>) <span class="keyword">and</span> strcasecmp(getenv(<span class="string">'HTTP_X_FORWARDED_FOR'</span>),<span class="string">'unknown'</span>)) &#123;</div><div class="line">              $onlineip=getenv(<span class="string">'HTTP_X_FORWARDED_FOR'</span>);</div><div class="line">       &#125;<span class="keyword">elseif</span> (getenv(<span class="string">'REMOTE_ADDR'</span>) <span class="keyword">and</span> strcasecmp(getenv(<span class="string">'REMOTE_ADDR'</span>),<span class="string">'unknown'</span>)) &#123;</div><div class="line">              $onlineip=getenv(<span class="string">'REMOTE_ADDR'</span>);</div><div class="line">       &#125;<span class="keyword">elseif</span> (<span class="keyword">isset</span>($_SERVER[<span class="string">'REMOTE_ADDR'</span>]) <span class="keyword">and</span> $_SERVER[<span class="string">'REMOTE_ADDR'</span>] <span class="keyword">and</span> strcasecmp($_SERVER[<span class="string">'REMOTE_ADDR'</span>],<span class="string">'unknown'</span>)) &#123;</div><div class="line">              $onlineip=$_SERVER[<span class="string">'REMOTE_ADDR'</span>];</div><div class="line">       &#125;</div><div class="line">       preg_match(<span class="string">"/\d&#123;1,3&#125;\.\d&#123;1,3&#125;\.\d&#123;1,3&#125;\.\d&#123;1,3&#125;/"</span>,$onlineip,$match);</div><div class="line">       <span class="keyword">return</span> $onlineip = $match[<span class="number">0</span>] ? $match[<span class="number">0</span>] : <span class="string">'unknown'</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>很多应用都会在获取IP这里没有验证IP格式，导致存在注入漏洞，不过这里还只是可以伪造IP。</p>
+<p>再往下看可以看到一个值得关注的地方，sql查询统一操作函数inserttable()以及updatetable()函数，大多数SQL语句执行都会经过这里，所以我们要关注这个地方是是否还有过滤等问题。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> inserttable(<span class="variable">$tablename</span>, <span class="variable">$insertsqlarr</span>, <span class="variable">$returnid</span>=0, <span class="variable">$replace</span> = <span class="literal">false</span>, <span class="variable">$silent</span>=0) &#123;</div><div class="line">       global <span class="variable">$db</span>;</div><div class="line">       <span class="variable">$insertkeysql</span> = <span class="variable">$insertvaluesql</span> = <span class="variable">$comma</span> = <span class="string">''</span>;</div><div class="line">       foreach (<span class="variable">$insertsqlarr</span> as <span class="variable">$insert_key</span> =&gt; <span class="variable">$insert_value</span>) &#123;</div><div class="line">              <span class="variable">$insertkeysql</span> .= <span class="variable">$comma</span>.<span class="string">'`'</span>.<span class="variable">$insert_key</span>.<span class="string">'`'</span>;</div><div class="line">              <span class="variable">$insertvaluesql</span> .= <span class="variable">$comma</span>.<span class="string">'\'</span><span class="string">'.$insert_value.'</span>\<span class="string">''</span>;</div><div class="line">              <span class="variable">$comma</span> = <span class="string">', '</span>;</div><div class="line">       &#125;</div><div class="line">       <span class="variable">$method</span> = <span class="variable">$replace</span>?<span class="string">'REPLACE'</span>:<span class="string">'INSERT'</span>;</div><div class="line">       // <span class="built_in">echo</span> <span class="variable">$method</span>.<span class="string">" INTO <span class="variable">$tablename</span> (<span class="variable">$insertkeysql</span>) VALUES (<span class="variable">$insertvaluesql</span>)"</span>, <span class="variable">$silent</span>?<span class="string">'SILENT'</span>:<span class="string">''</span>;die;</div><div class="line">       <span class="variable">$state</span> = <span class="variable">$db</span>-&gt;query(<span class="variable">$method</span>.<span class="string">" INTO <span class="variable">$tablename</span> (<span class="variable">$insertkeysql</span>) VALUES (<span class="variable">$insertvaluesql</span>)"</span>, <span class="variable">$silent</span>?<span class="string">'SILENT'</span>:<span class="string">''</span>);</div><div class="line">       <span class="keyword">if</span>(<span class="variable">$returnid</span> &amp;&amp; !<span class="variable">$replace</span>) &#123;</div><div class="line">              <span class="built_in">return</span> <span class="variable">$db</span>-&gt;insert_id();</div><div class="line">       &#125;<span class="keyword">else</span> &#123;</div><div class="line">           <span class="built_in">return</span> <span class="variable">$state</span>;</div><div class="line">       &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>再往下走则是wheresql()函数，是sql语句查询的where条件拼接的地方，我们可以看到参数都使用了单引号进行包裹起来，代码如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">wheresql</span><span class="params">($wherearr=<span class="string">''</span>)</span></span></div><div class="line">&#123;</div><div class="line">       $wheresql=<span class="string">""</span>;</div><div class="line">       <span class="keyword">if</span> (is_array($wherearr))</div><div class="line">              &#123;</div><div class="line">              $where_set=<span class="string">' WHERE '</span>;</div><div class="line">                     <span class="keyword">foreach</span> ($wherearr <span class="keyword">as</span> $key =&gt; $value)</div><div class="line">                     &#123;</div><div class="line">                     $wheresql .=$where_set. $comma.$key.<span class="string">'="'</span>.$value.<span class="string">'"'</span>;</div><div class="line">                     $comma = <span class="string">' AND '</span>;</div><div class="line">                     $where_set=<span class="string">' '</span>;</div><div class="line">                     &#125;</div><div class="line">              &#125;</div><div class="line">       <span class="keyword">return</span> $wheresql;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>还有一个访问令牌生成的函数asyn_userkey()，拼接用户名、密码salt以及密码进行一次md5，访问的时候只要在GET参数key的值里面加上生成的这个key即可验证是否有权限，被用在注册、找回密码等验证过程中，也就是我们能看到的找回密码链接里面的key，代码如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyn_userkey</span><span class="params">($uid)</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">global</span> $db;</div><div class="line">       $sql = <span class="string">"select * from "</span>.table(<span class="string">'members'</span>).<span class="string">" where uid = '"</span>.intval($uid).<span class="string">"' LIMIT 1"</span>;</div><div class="line">       $user=$db-&gt;getone($sql);</div><div class="line">       <span class="keyword">return</span> md5($user[<span class="string">'username'</span>].$user[<span class="string">'pwd_hash'</span>].$user[<span class="string">'password'</span>]);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>则是具体功能的实现代码，我们这时候还不需要看，先再了解下程序的其他结构。</p>
+<p>1.1.1.3 查看配置文件</p>
+<p>接下里我们找找看配置文件，上面我们有介绍到配置文件的文件名通常都带有” config”这样的关键字，我们只要搜索带有这个关键字的文件名即可，如图所示：</p>
+<p>在搜索结果中我们可以看到有搜索出来多个文件，结合文件所在目录这个经验可以判断出data目录下面的config.php以及cache_config.php才是真正的配置文件，打开/data/config.php看看代码，如下：<br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">$dbhost   = <span class="string">"localhost"</span>;</div><div class="line">$dbname   = <span class="string">"1850pxs"</span>;</div><div class="line">$dbuser   = <span class="string">"root"</span>;</div><div class="line">$dbpass   = <span class="string">"123456"</span>;</div><div class="line">$pre    = <span class="string">"qs_"</span>;</div><div class="line">$QS_cookiedomain = <span class="string">''</span>;</div><div class="line">$QS_cookiepath =  <span class="string">"/1850pxs/"</span>;</div><div class="line">$QS_pwdhash = <span class="string">"K0ciF:RkE4xNhu@S"</span>;</div><div class="line"><span class="class"><span class="keyword">define</span></span>(<span class="string">'QISHI_CHARSET'</span>,<span class="string">'gb2312'</span>);</div><div class="line"><span class="class"><span class="keyword">define</span></span>(<span class="string">'QISHI_DBCHARSET'</span>,<span class="string">'GBK'</span>);</div><div class="line"><span class="meta">?&gt;</span></div></pre></td></tr></table></figure></p>
+<p>很明显的可以看到这里，很有可能存在我们之前说过的双引号解析代码执行的问题，通常这个配置是在安装系统的时候设置的，或者后台也有设置的地方，另外我们还应该记住的一个点是QISHI_DBCHARSET常量，这里配置的数据库编码是GBK，也就可能存在宽字节注入，不过需要看数据库连接时设置的编码，不妨找找看，找到骑士cms连接mysql的代码在include\mysql.class.php文件的connect()函数，代码如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">connect</span><span class="params">($dbhost, $dbuser, $dbpw, $dbname = <span class="string">''</span>, $dbcharset = <span class="string">'gbk'</span>, $connect=<span class="number">1</span>)</span></span>&#123;</div><div class="line">       $func = <span class="keyword">empty</span>($connect) ? <span class="string">'mysql_pconnect'</span> : <span class="string">'mysql_connect'</span>;</div><div class="line">       <span class="keyword">if</span>(!<span class="keyword">$this</span>-&gt;linkid = @$func($dbhost, $dbuser, $dbpw, <span class="keyword">true</span>))&#123;</div><div class="line">              <span class="keyword">$this</span>-&gt;dbshow(<span class="string">'Can not connect to Mysql!'</span>);</div><div class="line">       &#125; <span class="keyword">else</span> &#123;</div><div class="line">              <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;dbversion() &gt; <span class="string">'4.1'</span>)&#123;</div><div class="line">                     mysql_query( <span class="string">"SET NAMES gbk"</span>);</div><div class="line">                     <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;dbversion() &gt; <span class="string">'5.0.1'</span>)&#123;</div><div class="line">                            mysql_query(<span class="string">"SET sql_mode = ''"</span>,<span class="keyword">$this</span>-&gt;linkid);</div><div class="line">                            mysql_query(<span class="string">"SET character_set_connection="</span>.$dbcharset.<span class="string">", character_set_results="</span>.$dbcharset.<span class="string">", character_set_client=binary"</span>, <span class="keyword">$this</span>-&gt;linkid);</div><div class="line">                     &#125;</div><div class="line">              &#125;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">if</span>($dbname)&#123;</div><div class="line">              <span class="keyword">if</span>(mysql_select_db($dbname, <span class="keyword">$this</span>-&gt;linkid)===<span class="keyword">false</span>)&#123;</div><div class="line">                     <span class="keyword">$this</span>-&gt;dbshow(<span class="string">"Can't select MySQL database($dbname)!"</span>);</div><div class="line">              &#125;</div><div class="line">       &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这段代码里面加粗部分有一个存在安全隐患的地方，代码中首先判断mysql版本是否大于4.1，如果是则执行：</p>
+<p>mysql_query( “SET NAMES gbk”);<br>执行这个语句之后再判断，如果大于5则执行：</p>
+<p>mysql_query(“SET character_set_connection=”.$dbcharset.”, haracter_set_results=”.$dbcharset.”, character_set_client=binary”, $this-&gt;linkid);<br>也就是说在mysql版本小于mysql5的情况下是不会执行这行代码的，但是执行了”set names gbk”，我们在之前有介绍过”set names gbk”其实干了三件事，等同于：</p>
+<p>SET character_set_connection=’ gbk’, haracter_set_results=’ gbk’, character_set_client=’gbk’<br>因此在mysql版本大于4.1小于5的情况下基本所有跟数据库有关的操作都存在宽字节注入。</p>
+<p>1.1.1.4 跟读首页文件</p>
+<p>通过对系统文件大概的了解，我们对这套程序的整体架构已经有了一定的了解，但是还不够了解，所以我们得跟读一下index.php文件，看看程序运行的时候会调用哪些文件和函数。</p>
+<p>打开首页文件index.php可以看到如下代码：</p>
+<p>if(!file_exists(dirname(<strong>FILE</strong>).’/data/install.lock’)) header(“Location:install/index.php”);<br>define(‘IN_QISHI’, true);<br>$alias=”QS_index”;<br>require_once(dirname(<strong>FILE</strong>).’/include/common.inc.php’);<br>首先判断安装锁文件是否存在，如果不存在则跳转到install/index.php，接下里是包含/include/common.inc.php 文件，跟进该文件查看，代码如下：</p>
+<p>require_once(QISHI_ROOT_PATH.’data/config.php’);<br>header(“Content-Type:text/html;charset=”.QISHI_CHARSET);<br>require_once(QISHI_ROOT_PATH.’include/common.fun.php’);<br>require_once(QISHI_ROOT_PATH.’include/1850pxs_version.php’);<br>/include/common.inc.php文件在开头包含了三个文件，data/config.php为数据库配置文件，include/common.fun.php文件为基础函数库文件，include/1850pxs_version.php为应用版本文件，接着往下看：</p>
+<p>if (!empty($_GET))<br>{<br>$_GET  = addslashes_deep($_GET);<br>}<br>if (!empty($_POST))<br>{<br>$_POST = addslashes_deep($_POST);<br>}<br>$_COOKIE   = addslashes_deep($_COOKIE);<br>$_REQUEST  = addslashes_deep($_REQUEST);<br>这段代码调用了include/common.fun.php文件里面的addslashes_deep() 函数对GET/POST/COOKIE参数进行了过滤，再往下走可以看到又有一个包含文件的操作：</p>
+<p>require_once(QISHI_ROOT_PATH.’include/tpl.inc.php’);<br>包含了include/tpl.inc.php文件，跟进看看这个文件做了什么，代码如下</p>
+<p>include_once(QISHI_ROOT_PATH.’include/template_lite/class.template.php’);<br>$smarty = new Template_Lite;<br>$smarty -&gt; cache_dir = QISHI_ROOT_PATH.’temp/caches/‘.$_CFG[‘template_dir’];<br>$smarty -&gt; compile_dir =  QISHI_ROOT_PATH.’temp/templates_c/‘.$_CFG[‘template_dir’];<br>$smarty -&gt; template_dir = QISHI_ROOT_PATH.’templates/‘.$_CFG[‘template_dir’];<br>$smarty -&gt; reserved_template_varname = “smarty”;<br>$smarty -&gt; left_delimiter = “”;<br>$smarty -&gt; force_compile = false;<br>$smarty -&gt; assign(‘_PLUG’, $_PLUG);<br>$smarty -&gt; assign(‘QISHI’, $_CFG);<br>$smarty -&gt; assign(‘page_select’,$page_select);<br>首先看到包含了include/template_lite/class.template.php文件，这是一个映射程序模板的类，由Paul Lockaby paul和Mark Dickenson编写，由于该文件较大，我们这里不在仔细分析，继续往下跟进，可以看到这段代码实例化了这个类对象赋值给$smarty变量，进行跟进则回转到index.php文件，代码如下：</p>
+<p>if(!$smarty-&gt;is_cached($mypage[‘tpl’],$cached_id))<br>{<br>require_once(QISHI_ROOT_PATH.’include/mysql.class.php’);<br>$db = new mysql($dbhost,$dbuser,$dbpass,$dbname);<br>unset($dbhost,$dbuser,$dbpass,$dbname);<br>$smarty-&gt;display($mypage[‘tpl’],$cached_id);<br>}<br>else<br>{<br>$smarty-&gt;display($mypage[‘tpl’],$cached_id);<br>}<br>判断是否已经缓存，然后调用display()函数输出页面，审计到这里是否对整个程序的框架比较熟悉了？接下来只要像审计index.php文件一样跟进其他功能入口文件即可完成代码通读。</p>
+<p>整个全文通读的思路大致如上所述，不同的程序有不同的实现方式，代码审计需要非常强的逻辑能力，如果你对这方面比较感兴趣，可以参考书籍《代码审计：企业级web代码安全架构》继续研究。</p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/web/">web</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/web/">web</a>, <a href="/tags/审计/">审计</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/2016/01/08/黑客攻防技术宝典web实战篇笔记4/" class="alignleft prev" title="黑客攻防技术宝典web实战篇笔记4">黑客攻防技术宝典web实战篇笔记4</a>
+    
+    
+    <a href="/2016/01/05/黑客攻防技术宝典web实战篇笔记3/" class="alignright next" title="黑客攻防技术宝典web实战篇笔记3">黑客攻防技术宝典web实战篇笔记3</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="2016/01/06/代码审计思路/" data-title="代码审计思路" data-url="https://xei7.github.io/2016/01/06/代码审计思路/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

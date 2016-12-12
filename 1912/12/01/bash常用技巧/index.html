@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>bash常用技巧 | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="本文分享了在 shell 学习和使用中经常用到的一些功能和技巧。编码规范1 对命令的返回值进行判断2 临时文件采用脚本名加 PID 标识并清理3 function 内的局部变量使用 local 限定符4 显式函数返回 return 脚本退出 exit5 变量名用 ${}括起来6 命令替换使用 $()">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="bash常用技巧"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	bash常用技巧
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="1912-12-01T00:00:00.000Z" itemprop="datePublished">1912-12-01</time>
+    更新日期:<time datetime="2015-11-30T03:49:09.813Z" itemprop="dateModified">2015-11-30</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>本文分享了在 shell 学习和使用中经常用到的一些功能和技巧。<br>编码规范<br>1 对命令的返回值进行判断<br>2 临时文件采用脚本名加 PID 标识并清理<br>3 function 内的局部变量使用 local 限定符<br>4 显式函数返回 return 脚本退出 exit<br>5 变量名用 ${}括起来<br>6 命令替换使用 $() 而不是反引号<br>7 将变量写在脚本头或者独立成配置</p>
+<p>参数处理<br>直接使用 $0,$1……，$@，$#<br>通过 eval 赋值<br>function_test key1=value1 key2=value2<br>在 function_test 内部使用<br>eval “$@”<br>解析参数输入, 后面就可以通过 $key1,$key2 使用了<br>通过 set 改变环境变量<br>string=“var1 var2 var3”<br>set – $string<br>则可以通过 $1 的值为 var1，$# 的值为 3。这种方法改变了环境变量，慎重。或者在 subshell 中使用</p>
+<p>getopts<br>理解 subshell/ 子进程<br>子进程可以继承父进程的环境变量</p>
+<p>num=0<br>cat file | while read line ; do<br>$num++<br>done<br>echo $num<br>和</p>
+<p>num=0<br>While read line ; do<br>let “num ++”<br>Done &lt; file<br>“|”创建了一个子进程，无法将变量传给父 shell</p>
+<p>避免常见陷阱</p>
+<ol>
+<li>避免 shell 参数个数限制<br>xargs</li>
+<li>避免 test 测试错误<br>[ “X$var” = Xsomething ]</li>
+<li>避免变量未初始化错误<br>${var:-0}</li>
+<li>避免 cd 引起路径错误<br>() # 或者<br>&amp;&amp; # 屏蔽</li>
+<li>更加安全的使用 $@<br>${1+”$@”}</li>
+<li>避免进程异常退出<br>trap ‘rm tempfle’ EXIT<br>crontab 中的元字符<br>%</li>
+<li>规避 xargs 的默认分割行为<br>find . -type f -mtime +7 -print 0 | xargs -0 rm</li>
+<li><p>避免拷贝错误：<br>cp file dir/       ## 一定记住最后的“/”<br>理解文件描述符<br>  … &gt;file 2&gt;&amp;1 # 和<br>  … 2&gt;&amp;1 &gt;file ## 的区别为: shell 从左到右读取参数</p>
+<p>  … &gt;file 2&gt;&amp;1 ## 将标准输出和标准错误重定向到 file<br>  2&gt;&amp;1 &gt;file ## 将标准输出重定向到 file，标准错误仍然为屏幕</p>
+</li>
+</ol>
+<p>——————-<br>     … &amp;&gt;/dev/null ## 等价于<br>     … &gt;/dev/null 2&gt;&amp;1 ## 使用前者。<br>命令分组<br>(command1;command2) &gt;log ## 子 shell 中运行命令组<br>{command1 ; command2 ;} &gt;/dev/null ## 当前 shell 中运行命令组<br>((command1;command2)&amp; ## 多个命令后台运行<br>字串替换<br>说明： # 前 % 后，控制字串截取方式 实例：当前目录下有如下文件</p>
+<p>host.new offline.new online.new rd.new wugui64.new xferlog.new</p>
+<p>需要将后缀.new 去掉</p>
+<p>for x in `ls *new`; do<br>old_name=${x%.new}<br>mv $x $old_name<br>done<br>进程替换<br>&lt;() 将进程的输出替换为文本做标准输入</p>
+<p>vimdiff &lt;() &lt;()<br>同时从文件和标准输入获取：</p>
+<p>cat file | diff – file2 ## – 代表标准输入<br>另外一种方式</p>
+<p>diff &lt;(cat file) file2<br>实例：diff 两台服务器的同一个配置文件</p>
+<p>Vimdiff &lt;(ssh server1 cat conf) &lt;(ssh server2 cat conf)<br>wget 使用<br>不要随便修改 -t -T 选项的设置<br>限制使用 *，失败后返回值仍为 0<br>注意加 -c 和不加 -c 的程序行为<br>从线上下载数据要加 –limit-rate=10M<br>ssh 的使用<br>非交互使用 ssh，最好加 -n 参数</p>
+<p>file 文件的内容为：</p>
+<p>server1<br>server2<br>while read server ; do<br>ssh -n $server ‘uname -r’<br>done &lt; file<br>远程使用 vim，加 -t 参数，分配 tty 超时，重试参数</p>
+<p>-o ConnectTimeout=20 -o ConnectionAttempts=4<br>使用 rsync 前，加 –dry-run 参数 scp 加 -p 参数，保持文件时间戳一致，利用浏览器缓存</p>
+<p>find 的使用<br>排除目录<br>find abs -path “abs/zllib” -prune -o -name “*.sh” –print<br>精确判断时间<br>touch –t time time_file<br>find –newer time_file<br>运行命令<br>-exec command {} \; # {}代表 find 找到的，作为 command 的参数<br>分离会话<br>1 nohup</p>
+<p>nohup command &amp; ## 需要注意的一点是如果 command 中包含多个命令，不要使用&amp;&amp; 连接，需要使用 ;<br>2 disown：命令敲下去发现忘记 nohup 了怎么办？使用 disown 补救 3 screen：在 wiki 中搜一下</p>
+<p>创建安全和可维护的脚本<br>1 供其他进程使用的文件生成时 采用更名再 mv 的方式 如</p>
+<p>file :&gt;file<br>2 将函数和配置独立成单独的脚本</p>
+<p>3 将不同服务器需要差异对待的变量提取成单独的配置文件</p>
+<p>4 日志打印必须包含脚本名 basename 和时间</p>
+<p>5 每步骤必须校验返回值</p>
+<p>6 脚本中避免使用 *</p>
+<p>7 保持缩进 4 个空格</p>
+<p>8 过长的命令按照|折行</p>
+<p>9 创建目录使用 mkdir –p</p>
+<p>10 如果采用后台运行一定要 wait： ( command1 ; command2 ) &amp; wait</p>
+<p>11 对于需要获取命令输出的命令需要将 stderr 屏蔽到 /dev/null</p>
+<p>12 抽离公共逻辑作为函数或者代码片段（导入变量）</p>
+<p>13 保证互斥和脚本实例唯一性</p>
+<p>参考资料<br>Abs — advanced bash scripting guide<br>unix power tools — unix 超级工具上、下</p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/linux/">linux</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/bash/">bash</a>, <a href="/tags/linux/">linux</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/1912/12/01/MSFVENOM/" class="alignleft prev" title="MSFVENOM">MSFVENOM</a>
+    
+    
+    <a href="/1912/12/01/linux安全机制/" class="alignright next" title="linux安全机制">linux安全机制</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="1912/12/01/bash常用技巧/" data-title="bash常用技巧" data-url="https://xei7.github.io/1912/12/01/bash常用技巧/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

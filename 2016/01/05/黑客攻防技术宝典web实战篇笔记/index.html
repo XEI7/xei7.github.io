@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>黑客攻防技术宝典web实战篇笔记 | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="黑客攻防技术宝典web实战篇">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="黑客攻防技术宝典web实战篇笔记"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	黑客攻防技术宝典web实战篇笔记
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2016-01-05T03:40:15.000Z" itemprop="datePublished">2016-01-05</time>
+    更新日期:<time datetime="2016-01-05T07:37:14.765Z" itemprop="dateModified">2016-01-05</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>黑客攻防技术宝典web实战篇<br><a id="more"></a></p>
+<p>P79<br>1.配置浏览器使用Burp或WebScarab作为本地代理<br>2.以常规方式浏览整个应用程序，访问发现的每一个URL，提交每一个表单并执行全部多阶段功能。尝试启用或禁用JavaScript、cookie的情况下进行浏览。<br>3.检查有代理服务器或爬虫工具生成的站点地图，确定手动浏览是没有发现的所有应用程序内容或功能。</p>
+<p>p83  【蛮力测试】<br>1.手动提出一些访问有效与无效的资源的请求，并确定服务器如何处理无效资源<br>2.使用用户指定的抓取生成的站点地图作为自动查找隐藏内容基础。<br>3.Burp Intruder结合字典，迅速生成大量请求。<br>4.收集从服务器收到的响应，并手动检查这些响应以确定有效的资源<br>5.反复执行这个过程，知道发现新内容。</p>
+<p>p84<br>1.检查用户指定的浏览与基本蛮力测试获得的结构。编译枚举出的所有子目录名称、文件词干和文件扩展名列表。<br>2.检查这些列表，确定应用程序使用的所有命名方案。</p>
+<p>4.2.4<br>p102<br>1.客户端确认–服务器没有采用确认检查<br>2.数据库交互–SQL注入<br>3.文件上传与下载–路径遍历漏洞、保存型跨站点脚本<br>4.显示用户提交的数据–跨站点脚本<br>5.动态重定向–重定向与消息头注入攻击<br>6.社交网络功能–用户名枚举、保存型跨站点脚本<br>7.登录–用户名枚举、脆弱密码、能使用蛮力<br>8.多阶段登录–登录缺陷<br>9.会话状态–可推测出的令牌、令牌处理不安全<br>10.访问控制–水平权限和垂直权限提升<br>11.用户伪装功能–权限提升<br>12.使用明文通信–会话劫持、收集证书和其他敏感数据<br>13.站外链接–Referer消息头中查询字符串参数泄漏<br>14.外部系统接口–处理会话与/或访问控制的快捷方式<br>15.错误消息–信息泄漏<br>16.电子邮件交互–电子邮件与命名注入<br>17.本地代码组件或交互–缓冲区溢出<br>18.使用第三方应用程序组件–已知漏洞<br>19.已确定的web服务器软件–常见配置薄弱环节、已知软件程序缺陷。</p>
+<p>5.1.3<br>p109<br>URL参数</p>
+<p>p111<br>模糊数据实施<br>1.如果知道模糊字符串的明文值，可以尝试破译模糊处理所使用的模糊算法<br>2.应用程序的2其他地方可能包换一些功能，攻击者可以利用他们返回由自己控制的一段明文生成的模糊字符串。在这种情况下，攻击者可以向目标功能直接提交任意一个有效载荷，获得所需要的字符串。<br>3.即使模糊字符串完全无法理解，也可以在其他</p>
+<h4 id="收集用户数据：HTML表单"><a href="#收集用户数据：HTML表单" class="headerlink" title="收集用户数据：HTML表单"></a>收集用户数据：HTML表单</h4><p>p115<br>1.寻找包含maxlength属性的表单元素。提交大于这个长度但其他格式合法的数据（）<br>2.如果应用程序接受的这个超长的数据，则可以据此推断出服务器并没有采用客户端确认机制<br>3.根据应用程序随后对参数进行的处理，可以通过确认机制中存在的缺陷利用其他漏洞，如SQL XSS 缓冲区溢出。</p>
+<h4 id="基于脚本的确认"><a href="#基于脚本的确认" class="headerlink" title="基于脚本的确认"></a>基于脚本的确认</h4><p>1.确定任何在提交表单前使用客户端javascript进行输入确认的情况<br>2.通过修改所提交的请求，再其中插入无效数据，或者修改确认代码使其失效，向服务器提交确认机制通常会阻止的数据<br>3.与长度限制一样，确定服务器是否采用了和客户端相同的控件；如果并非如此，确定是否可以利用这种情况实现任何恶意意图<br>4.注意，如果在提交表单前有几个输入字段需要由客户端确认机制校验，需要分别用无效数据此时每一个字段，同事再多有其他字段中使用有效数据。如果同时再几个字段中提交无效数据，可能服务器再识别出第一个无效字段时就已经停止执行表单，从而使测试无法达到应用程序的所有可能代码路径。</p>
+<h4 id="禁用元素"><a href="#禁用元素" class="headerlink" title="禁用元素"></a>禁用元素</h4><p>1.在应用程序的每一个表单中需找禁用的元素。尝试将发现的每一个元素与表单的其他参数一起提交给服务器，确定其是否有效。<br>2.通常，如果提交元素被标记为禁用，其按钮即以灰色显示，表示相关操作无效。这时应该尝试提交这些元素的名称，确定应用程序是否再执行所有请求的操作前执行服务器端检查。<br>3.注意，再提交表单时，浏览器并不包含禁用的表单元素；因此，仅仅通过浏览应用程序的功能以及监控由浏览器发布的请求并不能确定其中是否含有禁用元素。要确定禁用的元素，必须监控服务器的响应或在浏览器中查看页面来源。<br>4.还可以使用Burp Proxy 中的HTML修改功能自动重新启用应用程序中的任何禁用的字段</p>
+<h3 id="5-3-收集用户数据：浏览器扩展-P118"><a href="#5-3-收集用户数据：浏览器扩展-P118" class="headerlink" title="5.3 收集用户数据：浏览器扩展  P118"></a>5.3 收集用户数据：浏览器扩展  P118</h3><p><a href="http://www.ms509.com/" target="_blank" rel="external">http://www.ms509.com/</a></p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/web/">web</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/web/">web</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/2016/01/05/黑客攻防技术宝典web实战篇笔记2/" class="alignleft prev" title="黑客攻防技术宝典web实战篇笔记2">黑客攻防技术宝典web实战篇笔记2</a>
+    
+    
+    <a href="/2015/12/10/十二经络穴位分寸歌诀/" class="alignright next" title="十二经络穴位分寸歌诀">十二经络穴位分寸歌诀</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="2016/01/05/黑客攻防技术宝典web实战篇笔记/" data-title="黑客攻防技术宝典web实战篇笔记" data-url="https://xei7.github.io/2016/01/05/黑客攻防技术宝典web实战篇笔记/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

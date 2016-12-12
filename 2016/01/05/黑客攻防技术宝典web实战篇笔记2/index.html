@@ -1,0 +1,234 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>黑客攻防技术宝典web实战篇笔记2 | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="黑客攻防技术宝典web实战篇">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="黑客攻防技术宝典web实战篇笔记2"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	黑客攻防技术宝典web实战篇笔记2
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2016-01-05T06:15:31.000Z" itemprop="datePublished">2016-01-05</time>
+    更新日期:<time datetime="2016-01-08T04:56:12.518Z" itemprop="dateModified">2016-01-08</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>黑客攻防技术宝典web实战篇<br><a id="more"></a></p>
+<h3 id="攻击验证机制"><a href="#攻击验证机制" class="headerlink" title="攻击验证机制"></a>攻击验证机制</h3><h4 id="密码保密性不强"><a href="#密码保密性不强" class="headerlink" title="密码保密性不强"></a>密码保密性不强</h4><pre><code>非常短或者空白密码、以常用的字典词汇或名称为密码、密码和用户名完全相同、仍然使用默认密码
+</code></pre><p>设法查明任何与密码强度有关的规则。<br>1.浏览该web站点，查找任何描述上述规则的内容<br>2.如果可以进行自我注册，用不同种类的脆弱密码注册几个用户，了解应用程序采用何种规则。<br>3.如果拥有一个账户并且可以更改密码，试着吧密码更改为各种脆弱密码。</p>
+<h4 id="蛮力攻击登录"><a href="#蛮力攻击登录" class="headerlink" title="蛮力攻击登录"></a>蛮力攻击登录</h4><p>1.用控制的某个账户手动提交几个错误的登录尝试，监控接受到的错误消息。<br>2.如果应用程序再大约10次登录失败后还没有返回任何有关账户锁定的消息，再尝试正确登录。如果登录成功，应用程序可能并未采用任何账户锁定策略。<br>3.如果账户被锁定，可以尝试重复使用不同的账户。如果应用程序发布任何cookie，这次可以将每个cookie仅用于一次登录尝试，并未随后的每次登录尝试过去新cookie。<br>4.此外，如果账户被锁定，应查看与提交无效密码相比，提交有效密码是否会导致应用程序的行为出现任何差异。如果确实如此，则可以继续实施密码猜测攻击，即使账户被锁定。<br>5.如果没有控制任何账户，尝试枚举一个有效的用户名并使用他提交几次错误登录，监控有关账户锁定的错误消息。<br>6.发动蛮力攻击前，首先确定应用程序响应成功与失败登录之间的行为差异，以此分清他们再自动攻击过程中表现出的区别。<br>7.列出已枚举出的或常见的用户名列表和常用密码列表。根据所有获得的任何有关密码强度规则的信息对上述列表甲乙修改，以避免进行多余测试。<br>8.使用这些用户名和密码的各种排列组合，通过适当的工具或定制脚本迅速生成登录请求。监控服务器响应以确定成功的登录尝试。<br>9.如果一次针对几个用户名，通常最好以广度优先而非深度优先的方式实施这种蛮力攻击。这包括循环使用一组密码并轮流对每个用户名使用每一个密码。这种方法又两方面的好处：首先可以更迅速的确定时候用常用密码的账户；其次，这样做可以降低处罚任何账户锁定防御的可能性，因为再使用同一个账户进行连续登录之间存在时间延迟。</p>
+<h4 id="详细的失败消息"><a href="#详细的失败消息" class="headerlink" title="详细的失败消息"></a>详细的失败消息</h4><p>1.如果已经知道一个有效的用户名，使用这个用户名和一个错误的密码惊醒一次登录，然后使用一个完全随机的用户名进行另一次登录。<br>2.记录服务器响应两次登录尝试的每一个细节，包括状态码、任何重定向、屏幕上显示的信息以及任何隐藏再HTML页面中的差异。使用拦截代理服务器保存服务器上回流量的完整历史记录。<br>3.努力找出服务器响应两次登录尝试的任何明显或细微的差异。<br>4.如果无法发现任何差异，在应用程序中任何提交用户名的地方重复上述操作。<br>5.如果发现服务器响应有效和无效用户名之间的差异，收集一个常见用户名列表并使用一个定制脚本或自动工具迅速提交用户名，过滤出说明用户有效的响应。<br>6.开始枚举操作之前，请确定应用程序是否在登录尝试失败次数达到一定数目后执行账户锁定。如果应用程序执行账户锁定，最好再设计枚举攻击时记住这一点。例如，如果应用程序只能允许登录某个账户时失败3次，可能就会再使用通过自动枚举发现的每个用户名登录时“浪费”一次登录机会。因此，当进行枚举攻击时，不要在每次登录时提交完全不合理的密码，而是提交常见的密码，如password1或以用户名为密码。如果应用程序执行脆弱的密码强度规则，再枚举操作过程中执行的一次登陆尝试就很可能会取得成功，有些情况下还可能同事查明用户名和密码。要以用户名设置密码字段，可以使用BurpIntruder中的“battering ram” 攻击模式，再登录请求的几个位置插入相同的有效载荷。</p>
+<h4 id="证书传输易受到攻击"><a href="#证书传输易受到攻击" class="headerlink" title="证书传输易受到攻击"></a>证书传输易受到攻击</h4><p>P145<br>1.进行一次成功登录，监控客户端与服务器之间的所有来回流量<br>2.确定再来回方向传输证书的每一种情况。<br>3.如果发现通过URL 查询字符串或者以cookie的方式提交证书，或者服务器向客户端传输证书的任何情况，了解传输的一切细节并设法弄清应用程序开发者这样做的目的。设法查明攻击者干扰应用程序逻辑以获取其他用户证书的各种手段。<br>4.如果通过非加密渠道传输任何敏感信息，这样做当然容易遭受攻击。<br>5.如果没有发现证书传输不安全的情况，留意任何明显被编码或模糊处理的数据。如果这些数据中包括敏感数据，其模糊算法可能遭受逆向工程。<br>6.如果使用HTTPS提交证书，但使用HTTP加载登录表单，那么应用程序就容易遭受中间人攻击，攻击者也可能使用攻击手段获取证书。</p>
+<h4 id="密码修改功能"><a href="#密码修改功能" class="headerlink" title="密码修改功能"></a>密码修改功能</h4><p>1.确定应用程序中的所有密码修改功能。即使公布的内容中没有明确的密码修改功能链接，应用程序仍然可能实施这种功能。<br>2.使用无效的用户名、无效的现有密码及不匹配的“新密码”和“确认新密码”值向密码修改功能提交各种请求。<br>3.设法确定任何可用于用户名枚举或蛮力攻击的行为。</p>
+<h4 id="忘记密码功能"><a href="#忘记密码功能" class="headerlink" title="忘记密码功能"></a>忘记密码功能</h4><h4 id="P149"><a href="#P149" class="headerlink" title="P149"></a>P149</h4><h4 id="“记住我”功能"><a href="#“记住我”功能" class="headerlink" title="“记住我”功能"></a>“记住我”功能</h4><p>1.激活所有“记住我”功能，确定应用程序是否完全“记住”用户名和密码，还是仅记住用户名，仍然要求用户再随机的访问中输入密码。如果采用后一种设置，该功能就不大可能存在安全漏洞。<br>2.仔细检查应用程序设定的所有持续性cookie，以及其他本地存储机制中的持续性数据，如IE的userData、Seilverlight的隔离存储、Flash的本地共享对象。<br>3.</p>
+<h4 id="用户伪装功能"><a href="#用户伪装功能" class="headerlink" title="用户伪装功能"></a>用户伪装功能</h4><h4 id="证书确认不完善"><a href="#证书确认不完善" class="headerlink" title="证书确认不完善"></a>证书确认不完善</h4><h4 id="非唯一性用户名"><a href="#非唯一性用户名" class="headerlink" title="非唯一性用户名"></a>非唯一性用户名</h4><h4 id="可预测的用户名"><a href="#可预测的用户名" class="headerlink" title="可预测的用户名"></a>可预测的用户名</h4><h4 id="可预测的初始密码"><a href="#可预测的初始密码" class="headerlink" title="可预测的初始密码"></a>可预测的初始密码</h4><p>P156</p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/web/">web</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/web/">web</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/2016/01/05/黑客攻防技术宝典web实战篇笔记3/" class="alignleft prev" title="黑客攻防技术宝典web实战篇笔记3">黑客攻防技术宝典web实战篇笔记3</a>
+    
+    
+    <a href="/2016/01/05/黑客攻防技术宝典web实战篇笔记/" class="alignright next" title="黑客攻防技术宝典web实战篇笔记">黑客攻防技术宝典web实战篇笔记</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="2016/01/05/黑客攻防技术宝典web实战篇笔记2/" data-title="黑客攻防技术宝典web实战篇笔记2" data-url="https://xei7.github.io/2016/01/05/黑客攻防技术宝典web实战篇笔记2/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

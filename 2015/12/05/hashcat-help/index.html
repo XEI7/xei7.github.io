@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>hashcat-help | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="HashCat主要分为三个版本：Hashcat、oclHashcat-plus、oclHashcat-lite。这三个版本的主要区别是：HashCat只支持CPU破解。oclHashcat-plus支持使用GPU破解多个HASH，并且支持的算法高达77种。oclHashcat-lite只支持使用GPU对单个HASH进行破解，支持的HASH种类仅有32种，但是对算法进行了优化，可以达到GPU破解的最高速度。如果只有单个密文进行破解的话，推荐使用oclHashCat-lite。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="hashcat-help"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	hashcat-help
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-12-05T10:49:12.000Z" itemprop="datePublished">2015-12-05</time>
+    更新日期:<time datetime="2015-12-05T13:19:41.896Z" itemprop="dateModified">2015-12-05</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>HashCat主要分为三个版本：Hashcat、oclHashcat-plus、oclHashcat-lite。<br>这三个版本的主要区别是：HashCat只支持CPU破解。<br>oclHashcat-plus支持使用GPU破解多个HASH，并且支持的算法高达77种。<br>oclHashcat-lite只支持使用GPU对单个HASH进行破解，支持的HASH种类仅有32种，但是对算法进行了优化，可以达到GPU破解的最高速度。如果只有单个密文进行破解的话，推荐使用oclHashCat-lite。<br><a id="more"></a></p>
+<h2 id="General"><a href="#General" class="headerlink" title="General:"></a>General:</h2><pre><code>-m,  --hash-type=NUM               Hash-type, see references below
+-a,  --attack-mode=NUM             Attack-mode, see references below
+</code></pre><p>  Misc:</p>
+<pre><code>--hex-salt                    Assume salt is given in hex
+--hex-charset                 Assume charset is given in hex
+--runtime=NUM                 Abort session after NUM seconds of runtime
+</code></pre><h2 id="Attack-modes"><a href="#Attack-modes" class="headerlink" title="* Attack modes:"></a>* Attack modes:</h2><pre><code>0 = Straight
+1 = Combination
+2 = Toggle-Case
+3 = Brute-force
+4 = Permutation
+5 = Table-Lookup
+6 = Prince
+</code></pre><h2 id="Built-in-charsets"><a href="#Built-in-charsets" class="headerlink" title="Built-in charsets:"></a>Built-in charsets:</h2><pre><code>?l = abcdefghijklmnopqrstuvwxyz
+?u = ABCDEFGHIJKLMNOPQRSTUVWXYZ
+?d = 0123456789
+?s =  !&quot;#$%&amp;&apos;()*+,-./:;&lt;=&gt;?@[\]^_`{|}~
+?a = ?l?u?d?s
+?b = 0x00 - 0xff
+</code></pre><p>-</p>
+<pre><code>?l表示a-z，?u表示A-Z，?d表示0-9，?a表示键盘上所有的特殊字符，
+?s表示键盘上所有的可见字符，?h表示8bit 0xc0-0xff的十六进制，
+?D表示8bit的德语字符，?F表示8bit的法语字符，?R表示8bit的俄语字符。
+</code></pre><h2 id="Custom-charsets"><a href="#Custom-charsets" class="headerlink" title="Custom charsets:"></a>Custom charsets:</h2><pre><code>-1,  --custom-charset1    
+-2,  --custom-charset2   
+-3,  --custom-charset3    
+-4,  --custom-charset4    
+</code></pre><p>–custom-charset1=?dabcdef<br>: sets charset ?1 to 0123456789abcdef<br>-2 mycharset.hcchr<br>: sets charset<br>?2 to chars contained in file<br>来表示，在掩码中用?1、?2、?3、?4来表示。</p>
+<p>比如说我要设置自定义字符集1为小写+数字，那么就加上<br>– custom-charset1 ?l?d<br>如果要设置自定义字符集2为abcd1234，那么就加上<br>–custom-charset2 abcd1234<br>如果要破解8位的小写+数字，那么需要设置自定义字符集1为<br>–custom-charset1 ?l?d<br>设置掩码为?1?1?1?1?1?1?1?1。 如果已知密码的第一位为数字，长度为8位，后几位为大写+小写，那么需要设置自定义字符集1为<br>–custom-charset1 ?l?u<br>设置掩码为?d?1?1?1?1?1?1?1。</p>
+<p>{掩码的长度}</p>
+<p>对于已知长度的密码，可以使用固定长度的掩码进行破解。比如要破解11位数字，就可以这样写掩码?d?d?d?d?d?d?d?d?d?d?d。</p>
+<p>对于想要破解一些未知长度的密码，希望软件在一定长度范围内进行尝试的，可以使用–increment参数，并且使用–increment-min ?定义最短长度，使用–increment-max ?定义最大长度。比如要尝试6-8位小写字母，可以这样写</p>
+<p>–increment –increment-min 6 –increment-max 8 ?l?l?l?l?l?l?l?l<br>{举例}</p>
+<p>破解8-11位数字+小写<br>oclHashcat-plus64.exe –hash-type 100 –attack-mode 3 –increment –increment-min 8 –increment-max 11 –custom-charset1 ?l?d d:sha1.txt ?1?1?1?1?1?1?1?1?1?1?1 </p>
+<h2 id="Resources"><a href="#Resources" class="headerlink" title="Resources:"></a>Resources:</h2><pre><code>-c,  --segment-size=NUM            Size in MB to cache from the wordfile
+-n,  --threads=NUM                 Number of threads
+-s,  --words-skip=NUM              Skip number of words (for resume)
+-l,  --words-limit=NUM             Limit number of words (for distributed)
+</code></pre><h2 id="Match-Hash-types"><a href="#Match-Hash-types" class="headerlink" title="* Match Hash types:"></a>* Match Hash types:</h2><pre><code> 0 = MD5
+10 = md5($pass.$salt)
+20 = md5($salt.$pass)
+30 = md5(unicode($pass).$salt)
+40 = md5($salt.unicode($pass))
+50 = HMAC-MD5 (key = $pass)
+60 = HMAC-MD5 (key = $salt)
+100 = SHA1
+110 = sha1($pass.$salt)
+120 = sha1($salt.$pass)
+130 = sha1(unicode($pass).$salt)
+140 = sha1($salt.unicode($pass))
+150 = HMAC-SHA1 (key = $pass)
+160 = HMAC-SHA1 (key = $salt)
+200 = MySQL323
+300 = MySQL4.1/MySQL5
+400 = phpass, MD5(Wordpress), MD5(phpBB3), MD5(Joomla)
+500 = md5crypt, MD5(Unix), FreeBSD MD5, Cisco-IOS MD5
+900 = MD4
+1000 = NTLM
+1100 = Domain Cached Credentials, mscash
+1400 = SHA256
+1410 = sha256($pass.$salt)
+1420 = sha256($salt.$pass)
+1430 = sha256(unicode($pass).$salt)
+1440 = sha256($salt.unicode($pass))
+1450 = HMAC-SHA256 (key = $pass)
+1460 = HMAC-SHA256 (key = $salt)
+1600 = md5apr1, MD5(APR), Apache MD5
+1700 = SHA512
+1710 = sha512($pass.$salt)
+1720 = sha512($salt.$pass)
+1730 = sha512(unicode($pass).$salt)
+1740 = sha512($salt.unicode($pass))
+1750 = HMAC-SHA512 (key = $pass)
+1760 = HMAC-SHA512 (key = $salt)
+1800 = SHA-512(Unix)
+2400 = Cisco-PIX MD5
+2410 = Cisco-ASA MD5
+2500 = WPA/WPA2
+2600 = Double MD5
+3200 = bcrypt, Blowfish(OpenBSD)
+3300 = MD5(Sun)
+3500 = md5(md5(md5($pass)))
+3610 = md5(md5($salt).$pass)
+3710 = md5($salt.md5($pass))
+3720 = md5($pass.md5($salt))
+3810 = md5($salt.$pass.$salt)
+3910 = md5(md5($pass).md5($salt))
+4010 = md5($salt.md5($salt.$pass))
+4110 = md5($salt.md5($pass.$salt))
+4210 = md5($username.0.$pass)
+4300 = md5(strtoupper(md5($pass)))  
+4400 = md5(sha1($pass))
+4500 = Double SHA1
+4600 = sha1(sha1(sha1($pass)))
+4700 = sha1(md5($pass))
+4710 = sha1($salt.$pass.$salt)
+4800 = MD5(Chap), iSCSI CHAP authentication
+5000 = SHA-3(Keccak)
+5100 = Half MD5
+5200 = Password Safe SHA-256  
+5300 = IKE-PSK MD5  
+5400 = IKE-PSK SHA1
+5500 = NetNTLMv1-VANILLA / NetNTLMv1-ESS
+5600 = NetNTLMv2
+5700 = Cisco-IOS SHA256
+5800 = Android PIN
+6300 = AIX {smd5}
+6400 = AIX {ssha256}
+6500 = AIX {ssha512}
+6700 = AIX {ssha1}
+6900 = GOST, GOST R 34.11-94
+7000 = Fortigate (FortiOS)
+7100 = OS X v10.8 / v10.9
+7200 = GRUB 2
+7300 = IPMI2 RAKP HMAC-SHA1
+7400 = sha256crypt, SHA256(Unix)
+7900 = Drupal7
+8400 = WBB3, Woltlab Burning Board 3
+8900 = scrypt
+9200 = Cisco $8$
+9300 = Cisco $9$
+9800 = Radmin2
+10000 = Django (PBKDF2-SHA256)
+10200 = Cram MD5
+10300 = SAP CODVN H (PWDSALTEDHASH) iSSHA-1
+99999 = Plaintext
+</code></pre><p>  Specific hash types:</p>
+<pre><code>11 = Joomla &lt; 2.5.18
+12 = PostgreSQL
+21 = osCommerce, xt:Commerce
+23 = Skype
+101 = nsldap, SHA-1(Base64), Netscape LDAP SHA
+111 = nsldaps, SSHA-1(Base64), Netscape LDAP SSHA
+112 = Oracle 11g/12c
+121 = SMF &gt; v1.1
+122 = OS X v10.4, v10.5, v10.6
+123 = EPi
+124 = Django (SHA-1)
+131 = MSSQL(2000)
+132 = MSSQL(2005)
+133 = PeopleSoft
+141 = EPiServer 6.x &lt; v4
+1421 = hMailServer
+1441 = EPiServer 6.x &gt; v4
+1711 = SSHA-512(Base64), LDAP {SSHA512}
+1722 = OS X v10.7
+1731 = MSSQL(2012 &amp; 2014)
+2611 = vBulletin &lt; v3.8.5
+2612 = PHPS
+2711 = vBulletin &gt; v3.8.5
+2811 = IPB2+, MyBB1.2+
+3711 = Mediawiki B type
+3721 = WebEdition CMS
+7600 = Redmine Project Management Web App
+</code></pre>
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/安全/">安全</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/kali/">kali</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/2015/12/10/十二经络穴位分寸歌诀/" class="alignleft prev" title="十二经络穴位分寸歌诀">十二经络穴位分寸歌诀</a>
+    
+    
+    <a href="/2015/11/30/Re重装再重装/" class="alignright next" title="Re重装再重装">Re重装再重装</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="2015/12/05/hashcat-help/" data-title="hashcat-help" data-url="https://xei7.github.io/2015/12/05/hashcat-help/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

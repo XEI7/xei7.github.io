@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Sqlmapapi扫描 | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="Usage: sqlmapapi.py [options]
+Options:  -h, –help            show this help message and exit  -s, –server          Act as a REST-JSON API server  -c, –client          Act as a REST-JSON API client  -H HOST, –host=HOST  Host of the REST-JSON API server  -p PORT, –port=PORT  Port of the the REST-JSON API server">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Sqlmapapi扫描"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	Sqlmapapi扫描
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="1912-12-01T00:00:00.000Z" itemprop="datePublished">1912-12-01</time>
+    更新日期:<time datetime="2016-09-19T05:54:44.769Z" itemprop="dateModified">2016-09-19</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>Usage: sqlmapapi.py [options]</p>
+<p>Options:<br>  -h, –help            show this help message and exit<br>  -s, –server          Act as a REST-JSON API server<br>  -c, –client          Act as a REST-JSON API client<br>  -H HOST, –host=HOST  Host of the REST-JSON API server<br>  -p PORT, –port=PORT  Port of the the REST-JSON API server</p>
+<a id="more"></a>
+<p>从sqlmapapi.py文件可以看出来,我们利用的文件的调用关系是</p>
+<p>进入到lib/utils/api.py的server类,可以发现通过向server提交数据进行与服务的交互。 一共分为3种类型。</p>
+<p>Users’ methods 用户方法<br>Admin function 管理函数<br>sqlmap core interact functions 核心交互函数<br>可以提交数据的种类如下。</p>
+<p>用户方法</p>
+<p>@get(“/task/new”)<br>@get(“/task//delete”)<br>管理函数</p>
+<p>@get(“/admin//list”)<br>@get(“/admin//flush”)<br>核心交互函数</p>
+<p>@get(“/option//list”)<br>@post(“/option//get”)<br>@post(“/option//set”)<br>@post(“/scan//start”)<br>@get(“/scan//stop”)<br>@get(“/scan//kill”)<br>@get(“/scan//status”)<br>@get(“/scan//data”)<br>@get(“/scan//log//“)<br>@get(“/scan//log”)<br>@get(“/download///“)<br>不难发现这些操作可以完全满足我们的测试需求,因此利用这些就可以批量了。当然每一种请求都会有不同的返回值,这些返回值是json的形式传回, 解析就好了。其实这些我已经替大家做好了,调用AutoSqli类就可以了,但是还是要挑一些讲下。</p>
+<p>task/new 任务建立</p>
+<p>GET /task/new Response:<br>{<br>    “taskid”: “1d47d7f046df1504”<br>}</p>
+<pre><code>/scan/&lt;task_id&gt;/status 扫描任务状态
+</code></pre><p>GET /scan/<task_id>/status Response:<br>{<br>    “status”: “terminated”,<br>    “returncode”: 0<br>}</task_id></p>
+<p>通过sqlmap结合burpsuite工具，可以更加高效的对应用程序是否存在SQL注入漏洞进行地毯式的扫描。</p>
+<p>1.首先是burp设置记录log，文件名就随便填一个了。 </p>
+<p>2.把记录的log文件放sqlmap目录下</p>
+<p>3.sqlmap读log自动测试：</p>
+<p>python sqlmap.py -l 文件名 –batch -smart</p>
+<p>batch：自动选yes。</p>
+<p>smart：启发式快速判断，节约时间。</p>
+<p>4.最后能注入的url会保存到out文件夹下 </p>
+<p>注意：log文件中如果有sqlmap无法读取的字符（ascii码之外的字符）会读取失败。</p>
+<p>1.配置burpsuite下记录所有的request记录，并保存在指定文件夹。</p>
+<p>因为windows下sqlmap工具需要使用python，所以我的sqlmap路径放在了D:\mysoft\Python\sqlmap下面，</p>
+<p>而收集request的记录文件则命名为D:\mysoft\Python\sqlmap\burp.log文件。</p>
+<ol>
+<li>执行命令：sqlmap.py -l burp.log –batch -smart　　即可对burp.log中保存的所有request进行注入扫描。</li>
+</ol>
+<p>　　Batch:会自动选择yes</p>
+<p>　　Smart:启发式快速判断，节约时间。</p>
+<p>　　window版的sqlmap最后能注入的URL都会保存到C:\Users\Administrator.sqlmap文件夹下。</p>
+<p>–level=(1-5) #要执行的测试水平等级，默认为1<br>–risk=(0-3)  #测试执行的风险等级，默认为1<br>探测等级<br>参数：–level</p>
+<p>共有五个等级，默认为1，sqlmap使用的payload可以在xml/payloads.xml中看到，你也可以根据相应的格式添加自己的payload。</p>
+<p>这个参数不仅影响使用哪些payload同时也会影响测试的注入点，GET和POST的数据都会测试，HTTP Cookie在level为2的时候就会测试，HTTP User-Agent/Referer头在level为3的时候就会测试。</p>
+<p>总之在你不确定哪个payload或者参数为注入点的时候，为了保证全面性，建议使用高的level值。</p>
+<p>风险等级<br>参数：–risk</p>
+<p>共有四个风险等级，默认是1会测试大部分的测试语句，2会增加基于事件的测试语句，3会增加OR语句的SQL注入测试。</p>
+<p>在有些时候，例如在UPDATE的语句中，注入一个OR的测试语句，可能导致更新的整个表，可能造成很大的风险。</p>
+<p>测试的语句同样可以在xml/payloads.xml中找到，你也可以自行添加payload。</p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/sqlmap/">sqlmap</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/sqlmapapi/">sqlmapapi</a>, <a href="/tags/批量/">批量</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/1912/12/01/易经卦序歌/" class="alignleft prev" title="易经卦序歌">易经卦序歌</a>
+    
+    
+    <a href="/1912/12/01/Wireshark过滤器/" class="alignright next" title="Wireshark过滤器">Wireshark过滤器</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="1912/12/01/Sqlmapapi扫描/" data-title="Sqlmapapi扫描" data-url="https://xei7.github.io/1912/12/01/Sqlmapapi扫描/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

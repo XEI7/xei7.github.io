@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>linux安全机制 | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="ubuntu下可用的安全机制矩阵：https://wiki.ubuntu.com/Security/Features看了一会，简单罗列下，不知道理解对没：No Open Ports：系统默认安装完后，没有任何远程可访问的监听端口。1，127.x.x.x的端口不算，其属于本机回路测试IP地址，因此远程">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="linux安全机制"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	linux安全机制
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="1912-12-01T00:00:00.000Z" itemprop="datePublished">1912-12-01</time>
+    更新日期:<time datetime="2015-11-30T03:49:09.815Z" itemprop="dateModified">2015-11-30</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>ubuntu下可用的安全机制矩阵：<a href="https://wiki.ubuntu.com/Security/Features" target="_blank" rel="external">https://wiki.ubuntu.com/Security/Features</a><br>看了一会，简单罗列下，不知道理解对没：<br>No Open Ports：系统默认安装完后，没有任何远程可访问的监听端口。<br>1，127.x.x.x的端口不算，其属于本机回路测试IP地址，因此远程无法访问。<br>2，特例：DHCP或mDNS。<br>3，系统管理员安装相关服务程序后，比如apache，可以指定对应的监听端口。</p>
+<p>Password hashing：系统密码存放在/etc/shadow，从Ubuntu 8.10开始，使用SHA-512替代之前的MD5做哈希。</p>
+<p>SYN cookies：抵御SYN-flood DDOS工具。</p>
+<p>Filesystem Capabilities：现代文件系统支持xattrs扩展属性，减少setuid风险。<br><a href="http://plaintext.blog.edu.cn/home.php?mod=space&amp;uid=1557851&amp;do=blog&amp;id=382146" target="_blank" rel="external">http://plaintext.blog.edu.cn/home.php?mod=space&amp;uid=1557851&amp;do=blog&amp;id=382146</a></p>
+<p>Configurable Firewall：ufw防火墙，iptables的前端界面。</p>
+<p>Cloud PRNG seed：用来协助产生伪随机码，比较适合云环境。</p>
+<p>PR_SET_SECCOMP：使一个进程进入到一种“安全”运行模式，该模式下的进程只能调用4种系统调用（system calls），即read(), write(), exit()和sigreturn()，否则进程便会被终止。<br><a href="http://note.sdo.com/u/634687868481358385/NoteContent/M5cEN~kkf9BFnM4og00239" target="_blank" rel="external">http://note.sdo.com/u/634687868481358385/NoteContent/M5cEN~kkf9BFnM4og00239</a></p>
+<p>AppArmor\SELinux\SMACK：强制访问控制机制，指定应用程序可以执行或不可以执行的操作。</p>
+<p>Encrypted LVM：从Ubuntu 12.10后，Ubuntu可安装到一整块加密的lvm上，因此所有分区都在一个逻辑分卷里，包括交换分区，并且都是加密的。在安装过程中选择：guided – use tntire disk and set up encrypted LVM。</p>
+<p>eCryptfs：eCryptfs 是在 Linux 内核 2.6.19 版本中引入的一个功能强大的企业级加密文件系统，堆叠在其它文件系统之上（如 Ext2, Ext3, ReiserFS, JFS 等），为应用程序提供透明、动态、高效和安全的加密功能。<br>Ecryptfs是一个强大的本地加密软件。特点如下：<br>支持文件粒度：加密到每一个文件。你可以单独取出一个文件进行解密。而不是像其它软件那样，制作一个大大的文件包。<br>系统内核支持：解密文件夹挂载点（在哪查看解密文件夹），对用户和系统是透明的（与平常文件夹没有区别）。可以对复杂软件进行加密支持，比如sql数据库文件夹、web文件夹、聊天记录（对软件没有影响，也不需设置）。<br>多种加密方式：与普通软件不同，它提供了不同强度、方式的加密。<br><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-ecryptfs/" target="_blank" rel="external">http://www.ibm.com/developerworks/cn/linux/l-cn-ecryptfs/</a><br><a href="http://wiki.ubuntu.org.cn/Ecryptfs" target="_blank" rel="external">http://wiki.ubuntu.org.cn/Ecryptfs</a></p>
+<p>Stack Protector/Heap Protector/Pointer Obfuscation：开发人员使用</p>
+<p>Address Space Layout Randomisation (ASLR)：是一种针对缓冲区溢出的安全保护技术，通过对堆、栈、共享库映射等线性区布局的随机化，通过增加攻击者预测目的地址的难度，防止攻击者直接定位攻击代码位置，达到阻止溢出攻击的目的。据研究表明ASLR可以有效的降低缓冲区溢出攻击的成功率。<br>cat /proc/sys/kernel/randomize_va_space<br>0 – 表示关闭进程地址空间随机化。<br>1 – 表示将mmap的基址，stack和vdso页面随机化。<br>2 – 表示在1的基础上增加栈（heap）的随机化。</p>
+<p>Built as PIE：位置独立的可执行区域（position-independent executables）。这样使得在利用缓冲溢出和移动操作系统中存在的其他内存崩溃缺陷时采用面向返回的编程（return-oriented programming）方法变得难得多。<br>gcc -fPIE -pie …</p>
+<p>Built with Fortify Source：强化安全编译，通过”-D_FORTIFY_SOURCE=2″或-O1及以上优化，即可开启该项安全保护。<br>1，扩展安全函数：自动替换使用sprintf、strcpy等的n版函数，也就是snprintf、strncpy等，避免缓冲区溢出。<br>2，当格式字符串是一个可写的内存段适合，阻止%n格式串，攻击。<br>3，检查一些重要函数（比如system，write，open等）的返回状态码和参数。<br>4，创建新文件时需要指定文件mask掩码。</p>
+<p>Built with RELRO、Built with BIND_NOW：设置符号重定向表格为只读或在程序启动时就解析并绑定所有动态符号，从而减少对GOT（Global Offset Table）攻击。<br>RELRO: RELocation Read-Only：<a href="http://isisblogs.poly.edu/2011/06/01/relro-relocation-read-only/" target="_blank" rel="external">http://isisblogs.poly.edu/2011/06/01/relro-relocation-read-only/</a></p>
+<p>Non-Executable Memory：设置某些内存区域（heap、stack等）为不可执行（Non-eXecute (NX) or eXecute-Disable (XD)）。需要BIOS开启（从Ubuntu 11.04开始，Ubuntu忽略BIOS的设置，即不管BIOS是否开启，只要CPU支持，那么Ubuntu就会使用它）。需要开启PAE（64bit或32bit-server或32bit-generic-pae均以开启）。</p>
+<p>/proc/$pid/maps protection：限制maps文件只能被本身进程或进程所有者修改，其他均为只读。</p>
+<p>其它：….</p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/linux/">linux</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/笔记/">笔记</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/1912/12/01/bash常用技巧/" class="alignleft prev" title="bash常用技巧">bash常用技巧</a>
+    
+    
+    <a href="/1912/12/01/notenote/" class="alignright next" title="notenote">notenote</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="1912/12/01/linux安全机制/" data-title="linux安全机制" data-url="https://xei7.github.io/1912/12/01/linux安全机制/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>sqlmap学习2 | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="文章摘要">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="sqlmap学习2"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	sqlmap学习2
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-01-03T06:26:39.000Z" itemprop="datePublished">2015-01-03</time>
+    更新日期:<time datetime="2016-01-05T19:12:43.310Z" itemprop="dateModified">2016-01-06</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>文章摘要<br><a id="more"></a></p>
+<h4 id="SQLMAP的准备工作"><a href="#SQLMAP的准备工作" class="headerlink" title="SQLMAP的准备工作"></a>SQLMAP的准备工作</h4><p>SQLMAP在进行扫描之前会有防火墙的检测，当检测到有防火墙之后，进行SQL检测时的判断依据也会有所调整，如bool类型的盲注的时候，而其中heuristicCheckSqlInjection这一函数既会影响到接下来所要使用什么样的Payload进行测试，heuristicCheckSqlInjection翻译过来的意思是启发式SQL注入测试，那麽到底什么是启发式，<br>提示的依据就是根据这一个启发式SQL注入测试也就是本文要介绍的heuristicCheckSqlInjection来决定的。SQLMAP中有许多的Payload，足以有几百条，那麽如果全部Payload都测试一遍的话，无疑是一件很浪费时间的事情，除非Payload中的risk，clause，where字段中加以过滤，还会以这一个根据数据库的指纹来选择所要测试的Payload。</p>
+<p>heuristicCheckSqlInjection的主要作用可以分为以下几点:</p>
+<p>1.数据库版本的识别。<br>2.绝对路径获取。<br>3.XSS的测试</p>
+<h4 id="数据库版本的识别"><a href="#数据库版本的识别" class="headerlink" title="数据库版本的识别"></a>数据库版本的识别</h4><h1 id="Alphabet-used-for-heuristic-checks"><a href="#Alphabet-used-for-heuristic-checks" class="headerlink" title="Alphabet used for heuristic checks"></a>Alphabet used for heuristic checks</h1><p>HEURISTIC_CHECK_ALPHABET = (‘“‘, ‘\’’, ‘)’, ‘(‘, ‘,’, ‘.’)<br>…<br>randStr = “”<br>while ‘\’’ not in randStr:<br>    randStr = randomStr(length=10, alphabet=HEURISTIC_CHECK<em>ALPHABET)<br>kb.heuristicMode = True<br>payload = “%s%s%s” % (prefix, randStr, suffix)<br>payload = agent.payload(place, parameter, newValue=payload)<br>page, </em> = Request.queryPage(payload, place, content=True, raise404=False)<br>…<br>首先会从HEURISTIC_CHECK_ALPHABET中随机抽取10个字符出现构造Payload，当然里面的都不是些普通的字符，而且些特殊字符，当我们进行SQL注入测试的时候会很习惯的在参数后面加个分号啊什么的，又或者是其他一些特殊的字符，出现运气好的话有可能会暴出数据的相关错误信息，而那个时候我们就可以根据所暴出的相关错误信息去猜测当前目标的数据库是什么。</p>
+<p>实际找个网站测试，打下码，保护下。</p>
+<p><a href="http://***.***.***/datalist/default.aspx/article?category_id=1051" target="_blank" rel="external">http://***.***.***/datalist/default.aspx/article?category_id=1051</a><br>那麽经过while ‘\’’ not in randStr:后生成了随机的字符，然后就是发包检测返回的数据了。</p>
+<p>其实熟悉SQL注入的人也知道这是一个Oracle的一个错误信息，那麽接下来看看SQLMAP到底是怎样去判断的。</p>
+<p>位于./lib/request/connect.py中的getPage函数,大约在598行。</p>
+<p>def getPage(**kwargs):<br>    …<br>    processResponse(page, responseHeaders)<br>    …<br>其中processResponse会调用到./lib/parse/html.py中的htmlParser函数，这一个函数就是根据不同的数据库指纹去识别当前的数据库究竟是什么。</p>
+<p>def htmlParser(page):<br>    “””<br>    This function calls a class that parses the input HTML page to<br>    fingerprint the back-end database management system<br>    “””<br>    xmlfile = paths.ERRORS_XML<br>    handler = HTMLHandler(page)<br>    parseXmlFile(xmlfile, handler)<br>    if handler.dbms and handler.dbms not in kb.htmlFp:<br>        kb.lastParserStatus = handler.dbms<br>        kb.htmlFp.append(handler.dbms)<br>    else:<br>        kb.lastParserStatus = None</p>
+<pre><code># generic SQL warning/error messages
+if re.search(r&quot;SQL (warning|error|syntax)&quot;, page, re.I):
+    handler._markAsErrorPage()
+return handler.dbms
+</code></pre><p>最终实现的的其实是HTMLHandler这个类，而paths.ERRORS_XML这一变量的就是SQLMAP用来识别的指纹配置文件路径，位置在于./xml/errors.xml中。</p>
+<!-- Oracle -->
+<p><dbms value="Oracle"><br>    <error regexp="\bORA-[0-9][0-9][0-9][0-9]"><br>    <error regexp="Oracle error"><br>    <error regexp="Oracle.*Driver"><br>    <error regexp="Warning.*\Woci_.*"><br>    <error regexp="Warning.*\Wora_.*"><br></error></error></error></error></error></dbms><br>这一配置文件的比较简单，其实也就是一些对应数据库的正则。SQLMAP在解析errors.xml的时候，然后根据regexp中的正则去匹配当前的页面信息然后去确定当前的数据库。</p>
+<p>class HTMLHandler(ContentHandler):<br>    “””<br>    This class defines methods to parse the input HTML page to<br>    fingerprint the back-end database management system<br>    “””<br>    def <strong>init</strong>(self, page):<br>        ContentHandler.<strong>init</strong>(self)<br>        self._dbms = None<br>        self._page = page<br>        self.dbms = None<br>    def _markAsErrorPage(self):<br>        threadData = getCurrentThreadData()<br>        threadData.lastErrorPage = (threadData.lastRequestUID, self._page)<br>    def startElement(self, name, attrs):<br>        if name == “dbms”:<br>            self._dbms = attrs.get(“value”)<br>        elif name == “error”:<br>            if re.search(attrs.get(“regexp”), self._page, re.I):<br>                self.dbms = self._dbms<br>                self._markAsErrorPage()<br>可以发现当前返回的页面信息命中了<error regexp="\bORA-[0-9][0-9][0-9][0-9]">这一条正规</error></p>
+<p>Sqlmap3</p>
+<p>到此SQLMap就可以确定数据的版本了，从而选择对应的测试Payload，减少SQLMAP的扫描时间。</p>
+<h4 id="绝对路径获取与XSS检测"><a href="#绝对路径获取与XSS检测" class="headerlink" title="绝对路径获取与XSS检测"></a>绝对路径获取与XSS检测</h4><p>相比指纹识别，获取绝对路径的功能模块相对简单，利用正则匹配寻找出绝对路径。</p>
+<p>def parseFilePaths(page):<br>    “””<br>    Detects (possible) absolute system paths inside the provided page content<br>    “””<br>    if page:<br>        for regex in (r” in (?P.<em>?) on line”, r”(?:&gt;|\s)(?P[A-Za-z]:[\/][\w.\/]</em>)”, r”(?:&gt;|\s)(?P/\w[/\w.]+)”):<br>            for match in re.finditer(regex, page):<br>                absFilePath = match.group(“result”).strip()<br>                page = page.replace(absFilePath, “”)<br>                if isWindowsDriveLetterPath(absFilePath):<br>                    absFilePath = posixToNtSlashes(absFilePath)<br>                if absFilePath not in kb.absFilePaths:<br>                    kb.absFilePaths.add(absFilePath)<br>而XSS的检测代码位于889行中:<br><figure class="highlight perl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># String used for dummy XSS check of a tested parameter value</span></div><div class="line">DUMMY_XSS_CHECK_APPENDIX = <span class="string">"&lt;'\"&gt;"</span></div><div class="line">    ...</div><div class="line">    value = <span class="string">"%s%s%s"</span> % (randomStr(), DUMMY_XSS_CHECK_APPENDIX, randomStr())</div><div class="line">    payload = <span class="string">"%s%s%s"</span> % (prefix, <span class="string">"'%s"</span> % value, suffix)</div><div class="line">    payload = agent.payload(place, parameter, newValue=payload)</div><div class="line">    page, <span class="number">_</span> = Request.queryPage(payload, place, content=True, raise404=False)</div><div class="line">    paramType = conf.method <span class="keyword">if</span> conf.method <span class="keyword">not</span> in (None, HTTPMETHOD.GET, HTTPMETHOD.POST) <span class="keyword">else</span> place</div><div class="line">    <span class="keyword">if</span> value in (page <span class="keyword">or</span> <span class="string">""</span>):</div><div class="line">        infoMsg = <span class="string">"heuristic (XSS) test shows that %s parameter "</span> % paramType</div><div class="line">        infoMsg += <span class="string">"'%s' might be vulnerable to XSS attacks"</span> % parameter</div><div class="line">        logger.info(infoMsg)</div><div class="line">    ...</div></pre></td></tr></table></figure></p>
+<p>最后根据输入的字符是否留着页面上，如果存在就提示有可能拥有XSS漏洞。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>至此heuristicCheckSqlInjection的功能也介绍的差不多了，通过具体了解SQLMAP的一些扫描规则又或者是思路，可以让我们根据具体的情况去配置SQLMAP又或者编写自己的SQL Fuzz系统，其中可以通过编辑errors.xml这一指数据纹配置来增强SQLMAP的嗅探能力，从而打造更强大的神器了。</p>
+<p>一般的操作是：先把proxy的requests请求保存成一个log文件，然后执行命令：<br>python sqlmap.py -l requests.log –smart –batch<br>一般有SQL注入漏洞的都啪啪啪的挖出来的，但是这里有个问题，因为 log是 requests的请求log所以就包含了所有的 requests请求。像静态资源文件啊（js.html.css）什么的都包含在里面，这就会导致整个检测周期会变得比较长。<br>    本着提高检测效率的精神，咱对sqlmap做一下简单的更改，这也完全得意于sqlmap作者对其开源。<br>修改比较简单，对请求的url进行判断，使用正则表达式对url内容进行判断，如果匹配的话就不往下执行。</p>
+<p>-l 参数修改：<br>在\sqlmap\lib\controller\controller.py文件找到 def start()，在conf.cookie = targetCookie加入以下代码<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> targetUrl, targetMethod, targetData, targetCookie, targetHeaders in kb.target<span class="variable">s:</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        <span class="keyword">conf</span>.url = targetUrl</div><div class="line">        <span class="keyword">conf</span>.method = targetMethod.upper() <span class="keyword">if</span> targetMethod <span class="keyword">else</span> targetMethod</div><div class="line">        <span class="keyword">conf</span>.data = targetData</div><div class="line">        <span class="keyword">conf</span>.cookie = targetCookie</div><div class="line"></div><div class="line">        #<span class="string">''</span><span class="string">' Static resource not injection '</span><span class="string">''</span></div><div class="line">        Static = re.findall(r<span class="string">"\w+\.(?:js|html|css|jpg|png)\?\w+"</span>,<span class="keyword">conf</span>.url)</div><div class="line">        <span class="keyword">if</span> Static:</div><div class="line">            infoMsg = <span class="string">"Static resource: %s not injection"</span> % Static</div><div class="line">            logger.info(infoMsg)</div><div class="line">            <span class="keyword">break</span></div><div class="line">        #<span class="string">''</span><span class="string">' Static resource not injection '</span><span class="string">''</span></div><div class="line"></div><div class="line">        <span class="keyword">conf</span>.httpHeaders = <span class="keyword">list</span>(initialHeaders)</div><div class="line">        <span class="keyword">conf</span>.httpHeaders.<span class="built_in">extend</span>(targetHeaders <span class="built_in">or</span> [])</div><div class="line"></div><div class="line">        initTargetEnv()</div></pre></td></tr></table></figure></p>
+<p>-u参数修改：<br>在\sqlmap\lib\controller\checks.py 文件找到 def checkConnection(suppressOutput=False) ，在if not suppressOutput and not conf.dummy加入以下代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> <span class="keyword">not</span> suppressOutput <span class="keyword">and</span> <span class="keyword">not</span> conf.dummy <span class="keyword">and</span> <span class="keyword">not</span> conf.offline:</div><div class="line">    infoMsg = <span class="string">"testing connection to the target URL"</span></div><div class="line">    logger.info(infoMsg)</div><div class="line"></div><div class="line"><span class="comment">#''' Static resource not injection '''</span></div><div class="line">Static = re.findall(<span class="string">r"\w+\.(?:js$|html|css|jpg|png)"</span>,conf.url)</div><div class="line"><span class="keyword">if</span> Static:</div><div class="line">    infoMsg = <span class="string">"Static resource: %s not injection"</span> % Static</div><div class="line">    logger.info(infoMsg)</div><div class="line">    <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line"><span class="comment">#''' Static resource not injection '''</span></div><div class="line"></div><div class="line"><span class="keyword">try</span>:</div><div class="line">    kb.originalPageTime = time.time()</div></pre></td></tr></table></figure>
+<p>修改完后，运行如下：</p>
+<p>python sqlmap.py -l 1.log -v 3</p>
+<p>先听我讲sqlmap源代码有个小bug，导致不能全量检测会漏掉一些URL和参数。<br>具体源代码如下：lib/core/option.py中_parseBurpLog()模块代码第366行，如下图：<br>当kb.targets不为空或url不在addedTargetUrls里时就添加检测队列，这会导致什么问题呢？<br>例如：</p>
+<p>#1：<br>post /1.php<br>a=ok&amp;b=ok</p>
+<p>#2：<br>post /1.php<br>a=ok&amp;c=inject</p>
+<p>两个url相同#1的参数不存在注入，#2的c参数存在注入。但sqlmap在批量提取url时由于两个url相同，所以只取了#1，而#2因为url跟#1的url一样，所以没添加到检测队列里。就这样我们的sqlmap就漏测#2存在注入的c参数了（真实被坑过）。</p>
+<p>基于以上原因，我决定对sqlmap加入检测队列算法进行修造，加入检测队列在url的基础上加入data的key做为判断条件（url+key），这样相同url而key不同请求history记录sqlmap也不漏测。<br>首先，把data里的Key提取出来，并对key进行一次按字符顺序排序，然后跟url组合是否加入检测队列的判断条件。<br>具体实现代码如下：<br><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> <span class="keyword">not</span>(conf.scope <span class="keyword">and</span> <span class="keyword">not</span> re.search(conf.scope, url, re.I)):</div><div class="line">            <span class="comment">#处理data参数，把key提取出来，key值做为判断重复的条件之一</span></div><div class="line">            <span class="keyword">a</span> = data</div><div class="line">            b = <span class="keyword">a</span>.<span class="built_in">split</span>(<span class="string">'&amp;'</span>)</div><div class="line">            <span class="comment">#print b</span></div><div class="line">            c = []</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> b:</div><div class="line">                <span class="keyword">if</span> i.find(<span class="string">'='</span>) &gt; <span class="number">0</span>:</div><div class="line">                    arr = i.<span class="built_in">split</span>(<span class="string">'='</span>)</div><div class="line">                    c.append(arr[<span class="number">0</span>])</div><div class="line">            <span class="comment">#print c</span></div><div class="line">            <span class="comment">#提取的key使用sorted按字符顺序排序一把，再组合成字符串。(如果数据庞大的话，建议把keystr转成hash值)</span></div><div class="line">            keystr = <span class="string">"%s%s"</span>%(url,<span class="string">''</span>.join(sorted(c)))</div><div class="line">            <span class="comment">#if not kb.targets or url not in addedTargetUrls:</span></div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> kb.targets <span class="keyword">or</span> keystr <span class="keyword">not</span> <span class="keyword">in</span> addedTargetUrls:</div><div class="line">                kb.targets.<span class="built_in">add</span>((url, method, data, cookie, tuple(headers)))</div><div class="line">                <span class="comment">#addedTargetUrls.add(url)</span></div><div class="line">                addedTargetUrls.<span class="built_in">add</span>(keystr)</div></pre></td></tr></table></figure></p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/sqlmap/">sqlmap</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/sqlmap/">sqlmap</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/2015/10/27/IRC/" class="alignleft prev" title="IRC">IRC</a>
+    
+    
+    <a href="/2015/01/03/sqlmap学习/" class="alignright next" title="sqlmap学习">sqlmap学习</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="2015/01/03/sqlmap学习2/" data-title="sqlmap学习2" data-url="https://xei7.github.io/2015/01/03/sqlmap学习2/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

