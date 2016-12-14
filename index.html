@@ -71,43 +71,6 @@
   <div class="post-content">
     <header>
       
-        <time datetime="2022-12-01T00:00:00.000Z"><a href="/2022/12/01/Elf学习/">2022-12-01</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2022/12/01/Elf学习/">Elf学习</a></h1>
-  
-
-    </header>
-    <div class="entry">
-		<p>文章摘要<br> 
-    </div>
-    <footer>
-		<div class="alignleft">
-		<a href="/2022/12/01/Elf学习/#more" class="more-link">Read more</a>
-		</div>
-        <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
         <time datetime="2022-12-01T00:00:00.000Z"><a href="/2022/12/01/Elf学习2/">2022-12-01</a></time>
       
       
@@ -159,6 +122,43 @@
     <footer>
 		<div class="alignleft">
 		<a href="/2022/12/01/CSI-Cyber笔记/#more" class="more-link">Read more</a>
+		</div>
+        <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <time datetime="2022-12-01T00:00:00.000Z"><a href="/2022/12/01/Elf学习/">2022-12-01</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2022/12/01/Elf学习/">Elf学习</a></h1>
+  
+
+    </header>
+    <div class="entry">
+		<p>文章摘要<br> 
+    </div>
+    <footer>
+		<div class="alignleft">
+		<a href="/2022/12/01/Elf学习/#more" class="more-link">Read more</a>
 		</div>
         <div class="clearfix"></div>
     </footer>
@@ -786,26 +786,21 @@
   <div class="post-content">
     <header>
       
-        <time datetime="1912-12-01T00:00:00.000Z"><a href="/1912/12/01/Aireplay-ng攻击模式详解/">1912-12-01</a></time>
+        <time datetime="1912-12-01T00:00:00.000Z"><a href="/1912/12/01/Sqlmapapi扫描/">1912-12-01</a></time>
       
       
   
-    <h1 class="title"><a href="/1912/12/01/Aireplay-ng攻击模式详解/">Aireplay-ng攻击模式详解</a></h1>
+    <h1 class="title"><a href="/1912/12/01/Sqlmapapi扫描/">Sqlmapapi扫描</a></h1>
   
 
     </header>
     <div class="entry">
-		<p>airbase-ng  -E “ssids-file”  -w “wep-key” wlan0mon</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mdk3 wlan0monmon b -n "<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert(1);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>" -w -g -m -s 15</div></pre></td></tr></table></figure>
-<p>mdk3 wlan0mon b<br>mdk3 wlan0mon d<br>iwconfig wlan1 txpower 33<br>mdk3 wlan0mon a -a 11:11:22:44:dd:00</p>
-<p>aireplay-ng -1 0 -e ap_essid -a ap_mac -h XXXXXXXXXX ath1<br>aireplay-ng -5 -b ap_mac -h XXXXXXXXXX ath1<br>aireplay-ng -3 -b ap_mac -h XXXXXXXXXX -x 1024 ath1<br>aireplay-ng -0 1 -a 00:00:00:00:00:00 -c BB:BB:BB:BB:BB:BB ath1<br>aireplay-ng -3 -b <AP MAC> -h <my MAC> -i ath1</p>
-<p>aircrack-ng -x -f 2 <em>.cap<br>aircrack-ng -w passdict.txt </em>.cap<br>aircrack-ng -n 64 -b apmac <em>.ivs<br>aircrack-ng -w passdict.txt -b 00:00:00:00:00:00 </em>.cap</p>
-<p>然后可以试着用手机连接，应该可以连上但上不了网<br>iptables –t nat –A POSTROUTING –out-interface eth0 –j MASQUERADE命令并回车，设置iptables转发，将所有数据转发到eth0网卡；<br>于是配置NAT</p>
-<p>iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE   #对eth0进行源nat<br>iptables -A FORWARD -i wlan0mon -o eth0 -j ACCEPT #把无线网卡流量转发到有线网卡（或者什么能上网的网卡）上面<br>iptables -A FORWARD -p tcp –syn -s  192.168.0.0/24 -j TCPMSS –set-mss 1356<br> 
+		<p>Usage: sqlmapapi.py [options]</p>
+<p>Options:<br>  -h, –help            show this help message and exit<br>  -s, –server          Act as a REST-JSON API server<br>  -c, –client          Act as a REST-JSON API client<br>  -H HOST, –host=HOST  Host of the REST-JSON API server<br>  -p PORT, –port=PORT  Port of the the REST-JSON API server</p> 
     </div>
     <footer>
 		<div class="alignleft">
-		<a href="/1912/12/01/Aireplay-ng攻击模式详解/#more" class="more-link">Read more</a>
+		<a href="/1912/12/01/Sqlmapapi扫描/#more" class="more-link">Read more</a>
 		</div>
         <div class="clearfix"></div>
     </footer>
@@ -823,7 +818,7 @@
     <aside id="sidebar" class="alignright">
   
 <div class="widget tag">
-  <h3 class="title">分类</h3>
+  <h3 class="title">Categories</h3>
   <ul class="entry">
   
     <li><a href="/categories/bluetooth/">bluetooth</a><small>2</small></li>
@@ -854,7 +849,7 @@
 
   
 <div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
+  <h3 class="title">Tag Cloud</h3>
   <div class="entry">
     <a href="/tags/aircrack/" style="font-size: 10px;">aircrack</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bluetooth/" style="font-size: 12.5px;">bluetooth</a> <a href="/tags/cookie/" style="font-size: 10px;">cookie</a> <a href="/tags/elf/" style="font-size: 12.5px;">elf</a> <a href="/tags/kali/" style="font-size: 12.5px;">kali</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rtl-sdr/" style="font-size: 10px;">rtl-sdr</a> <a href="/tags/sqlmap/" style="font-size: 12.5px;">sqlmap</a> <a href="/tags/sqlmapapi/" style="font-size: 10px;">sqlmapapi</a> <a href="/tags/waf/" style="font-size: 10px;">waf</a> <a href="/tags/web/" style="font-size: 17.5px;">web</a> <a href="/tags/wifi/" style="font-size: 10px;">wifi</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/中医/" style="font-size: 15px;">中医</a> <a href="/tags/五行/" style="font-size: 10px;">五行</a> <a href="/tags/养生/" style="font-size: 12.5px;">养生</a> <a href="/tags/审计/" style="font-size: 10px;">审计</a> <a href="/tags/工控/" style="font-size: 10px;">工控</a> <a href="/tags/批量/" style="font-size: 10px;">批量</a> <a href="/tags/易经/" style="font-size: 10px;">易经</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/绕过/" style="font-size: 10px;">绕过</a> <a href="/tags/重装/" style="font-size: 10px;">重装</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
   </div>
